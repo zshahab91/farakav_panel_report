@@ -1,0 +1,11 @@
+.component-table {
+  background: $white;
+  padding: 5%;
+  border: convert-size(1,em) solid $border-table;
+  border-radius: convert-size(3,em);
+  margin: 1%;
+  max-width: 100%;
+  table {
+    text-align: center;
+  }
+}

@@ -1,0 +1,146 @@
+.text-rtl{
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.page-app{
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  //direction: rtl;
+
+}
+[v-cloak]{
+  display: none;
+}
+.no-margin{
+  margin: 0;
+}
+.no-padding{
+  padding: 0;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+h1 {
+  font-size: 1.4em;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $bg-navbar-active;
+}
+
+em {
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Layout */
+.s-layout {
+  display: flex;
+  width: 100%;
+}
+
+.s-layout__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+nav li:hover,
+nav li.router-link-active,
+nav li.router-link-exact-active {
+  cursor: pointer;
+}
+.exact-active{
+  background-color: $bg-navbar-active ;
+}
+.page{
+  width: 100%;
+  background-color: $bg-container-second ;
+  //min-height: convert-size(1000,em);
+  min-height: 61.7em;
+}
+.container-page{
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+
+}
+.card{
+  border: 0.05em solid rgba(0, 0, 0, 0.31);
+  min-height: 6em;
+}
+
+.card-footer {
+  background-color: $bg-card-footer;
+  font-weight: 300;
+  border-bottom: 0.1em solid $bg-navbar-active;
+  min-height: 3em;
+  margin: 0 1px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  vertical-align: middle;
+  text-align: center;
+  padding: 4%;
+}
+.alert{
+  position: absolute !important;
+  z-index: 999 !important;
+  width: 25% !important;
+  right: 0 !important;
+  top: 0 !important;
+}
+.extra-data {
+  h5 {
+    margin: 0 1%;
+  }
+}
+.title-chart {
+  h6{
+    margin: 0 1%;
+  }
+}
+.title-chart-detail{
+  h4{
+    margin: 0 2%;
+  }
+}
+.card-body {
+  padding: 1rem !important;
+}
+.navbar-brand{
+  margin-right: 0.37em;
+}
+.loading{
+  background: rgba(183, 181, 181, 0.63);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  text-align: center;
+  padding-top: 20%;
+  font-size: convert-size(22,em);
+  span {
+    font-size: convert-size(25,em) !important;
+    font-weight: bold;
+  }
+}

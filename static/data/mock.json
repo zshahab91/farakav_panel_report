@@ -1,0 +1,911 @@
+{
+  "homepage_layout": {
+    "count": 81,
+    "changes_percent": {
+      "min": 0,
+      "max": 0.028,
+      "avg": 0.006
+    },
+    "changes_percent_against_yesterday": 0.132
+  },
+  "category_layout": {
+    "total": {
+      "count": 48,
+      "changes_percent_against_yesterday": 0.09,
+      "changes_percent": {
+        "min": 0,
+        "max": 0.24,
+        "avg": 0.088
+      }
+    },
+    "per_slug": {
+      "accidents": {
+        "title": "حوادث",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "politics": {
+        "title": "سیاسی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "art": {
+        "title": "هنری",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "news": {
+        "title": "خبری",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "health": {
+        "title": "سلامت",
+        "changes_percent": {
+          "min": 0,
+          "max": 0.08,
+          "avg": 0.04
+        },
+        "changes_percent_against_yesterday": 0.04,
+        "count": 2
+      },
+      "misc": {
+        "title": "متفرقه",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "culture": {
+        "title": "تاریخ و فرهنگ",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.15,
+        "count": 2
+      },
+      "360": {
+        "title": "360 درجه",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "kids": {
+        "title": "کودک",
+        "changes_percent": {
+          "min": 0,
+          "max": 0.16,
+          "avg": 0.046
+        },
+        "changes_percent_against_yesterday": 0.2,
+        "count": 7
+      },
+      "religious": {
+        "title": "مذهبی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.08,
+        "count": 2
+      },
+      "motherhood": {
+        "title": "مادر و نوزاد",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.12,
+        "count": 3
+      },
+      "social": {
+        "title": "اجتماعی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0.16,
+          "avg": 0.053
+        },
+        "changes_percent_against_yesterday": 0.16,
+        "count": 3
+      },
+      "tourism": {
+        "title": "گردشگری",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "tech": {
+        "title": "تکنولوژی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.12,
+        "count": 1
+      },
+      "education": {
+        "title": "آموزشی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0.16,
+          "avg": 0.08
+        },
+        "changes_percent_against_yesterday": 0.2,
+        "count": 2
+      },
+      "entertainment": {
+        "title": "سرگرمی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0.16,
+          "avg": 0.027
+        },
+        "changes_percent_against_yesterday": 0.2,
+        "count": 6
+      },
+      "science": {
+        "title": "علمی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.04,
+        "count": 1
+      },
+      "sport": {
+        "title": "ورزشی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0.24,
+          "avg": 0.093
+        },
+        "changes_percent_against_yesterday": 0.24,
+        "count": 6
+      },
+      "animation": {
+        "title": "انیمیشن",
+        "changes_percent": {
+          "min": 0,
+          "max": 0.08,
+          "avg": 0.04
+        },
+        "changes_percent_against_yesterday": 0.04,
+        "count": 2
+      },
+      "comedy": {
+        "title": "طنز",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.16,
+        "count": 3
+      },
+      "documentary": {
+        "title": "مستند",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0,
+        "count": 0
+      },
+      "cooking": {
+        "title": "آشپزی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.12,
+        "count": 3
+      },
+      "movie": {
+        "title": "فیلم",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.08,
+        "count": 1
+      },
+      "game": {
+        "title": "بازی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.2,
+        "count": 1
+      },
+      "music": {
+        "title": "موسیقی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.12,
+        "count": 1
+      },
+      "economics": {
+        "title": "اقتصادی",
+        "changes_percent": {
+          "min": 0,
+          "max": 0,
+          "avg": 0
+        },
+        "changes_percent_against_yesterday": 0.08,
+        "count": 2
+      }
+    }
+  },
+  "video": {
+    "per_status": {
+      "new": 0,
+      "submitted": 26,
+      "edited": 0,
+      "edited-rejected": 0,
+      "normalized": 2,
+      "transcoded": 996,
+      "bad-format": 3,
+      "rejected": 3,
+      "ignored": 0
+    },
+    "count": 1030,
+    "per_channel": {
+      "max": 142,
+      "min": 1,
+      "avg": 8.306
+    },
+    "visits": {
+      "max": 93278,
+      "min": 0,
+      "avg": 821.378
+    }
+  },
+  "channel": {
+    "count": 143,
+    "uploaders": 124,
+    "registration": {
+      "not_registered": 70,
+      "registered": 43,
+      "email_not_verified": 30,
+      "email_verified": 113,
+      "no_mobile": 84,
+      "has_mobile": 29,
+      "registered_no_mobile": 19,
+      "registered_has_mobile": 24,
+      "mobile_verified": 29,
+      "mobile_not_verified": 0
+    },
+    "visits": {
+      "max": 0,
+      "min": 0,
+      "avg": 0
+    }
+  },
+  "task": {
+    "total": {
+      "count": 6960,
+      "per_state": {
+        "in-progress": {
+          "count": 7,
+          "execution_time": {
+            "max": -87516.103,
+            "min": -129939.716,
+            "avg": -114870.406
+          }
+        },
+        "success": {
+          "count": 6811,
+          "execution_time": {
+            "max": 6293.171,
+            "min": 0.188,
+            "avg": 21.638
+          }
+        },
+        "failed": {
+          "count": 142,
+          "execution_time": {
+            "max": 29144.61,
+            "min": 0.243,
+            "avg": 267.3
+          }
+        }
+      }
+    },
+    "per_type": {
+      "send_mails": {
+        "count": 73,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 72,
+            "execution_time": {
+              "max": 4.564,
+              "min": 3.489,
+              "avg": 3.813
+            }
+          },
+          "failed": {
+            "count": 1,
+            "execution_time": {
+              "max": 2.975,
+              "min": 2.975,
+              "avg": 2.975
+            }
+          }
+        },
+        "extras": {}
+      },
+      "send_notifications": {
+        "count": 1944,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 1944,
+            "execution_time": {
+              "max": 2.321,
+              "min": 0.188,
+              "avg": 0.279
+            }
+          },
+          "failed": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          }
+        },
+        "extras": {}
+      },
+      "send_public_notifications": {
+        "count": 0,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "failed": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          }
+        },
+        "extras": {}
+      },
+      "sites_video_imports": {
+        "count": 273,
+        "per_state": {
+          "in-progress": {
+            "count": 7,
+            "execution_time": {
+              "max": -87516.103,
+              "min": -129939.716,
+              "avg": -114870.406
+            }
+          },
+          "success": {
+            "count": 250,
+            "execution_time": {
+              "max": 6293.171,
+              "min": 0.764,
+              "avg": 187.115
+            }
+          },
+          "failed": {
+            "count": 16,
+            "execution_time": {
+              "max": 29144.61,
+              "min": 0.601,
+              "avg": 2360.175
+            }
+          }
+        },
+        "extras": {
+          "per_site": {
+            "aparat": {
+              "count": 227,
+              "per_state": {
+                "in-progress": {
+                  "count": 3,
+                  "execution_time": {
+                    "max": -129238.424,
+                    "min": -129939.716,
+                    "avg": -129474.173
+                  }
+                },
+                "success": {
+                  "count": 212,
+                  "execution_time": {
+                    "max": 61.858,
+                    "min": 0.764,
+                    "avg": 3.484
+                  }
+                },
+                "failed": {
+                  "count": 12,
+                  "execution_time": {
+                    "max": 8.116,
+                    "min": 0.601,
+                    "avg": 3.88
+                  }
+                }
+              },
+              "extras": {}
+            },
+            "youtube": {
+              "count": 37,
+              "per_state": {
+                "in-progress": {
+                  "count": 4,
+                  "execution_time": {
+                    "max": -87516.103,
+                    "min": -109397.237,
+                    "avg": -103917.581
+                  }
+                },
+                "success": {
+                  "count": 31,
+                  "execution_time": {
+                    "max": 6293.171,
+                    "min": 31.506,
+                    "avg": 805.404
+                  }
+                },
+                "failed": {
+                  "count": 2,
+                  "execution_time": {
+                    "max": 511.211,
+                    "min": 5.575,
+                    "avg": 258.393
+                  }
+                }
+              },
+              "extras": {}
+            },
+            "vimeo": {
+              "count": 0,
+              "per_state": {
+                "in-progress": {
+                  "count": 0,
+                  "execution_time": {
+                    "max": 0.0,
+                    "min": 0.0,
+                    "avg": 0.0
+                  }
+                },
+                "success": {
+                  "count": 0,
+                  "execution_time": {
+                    "max": 0.0,
+                    "min": 0.0,
+                    "avg": 0.0
+                  }
+                },
+                "failed": {
+                  "count": 0,
+                  "execution_time": {
+                    "max": 0.0,
+                    "min": 0.0,
+                    "avg": 0.0
+                  }
+                }
+              },
+              "extras": {}
+            },
+            "twitch": {
+              "count": 9,
+              "per_state": {
+                "in-progress": {
+                  "count": 0,
+                  "execution_time": {
+                    "max": 0.0,
+                    "min": 0.0,
+                    "avg": 0.0
+                  }
+                },
+                "success": {
+                  "count": 7,
+                  "execution_time": {
+                    "max": 4038.152,
+                    "min": 986.634,
+                    "avg": 3010.356
+                  }
+                },
+                "failed": {
+                  "count": 2,
+                  "execution_time": {
+                    "max": 29144.61,
+                    "min": 8054.844,
+                    "avg": 18599.727
+                  }
+                }
+              },
+              "extras": {}
+            }
+          }
+        }
+      },
+      "downloads": {
+        "count": 0,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "failed": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          }
+        },
+        "extras": {}
+      },
+      "remote_video_callbacks": {
+        "count": 121,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 121,
+            "execution_time": {
+              "max": 1.457,
+              "min": 0.415,
+              "avg": 0.785
+            }
+          },
+          "failed": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          }
+        },
+        "extras": {}
+      },
+      "remote_video_imports": {
+        "count": 344,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 340,
+            "execution_time": {
+              "max": 32.397,
+              "min": 0.462,
+              "avg": 1.732
+            }
+          },
+          "failed": {
+            "count": 4,
+            "execution_time": {
+              "max": 41.391,
+              "min": 0.679,
+              "avg": 11.115
+            }
+          }
+        },
+        "extras": {
+          "per_domain": {
+            "file:///mnt": {
+              "per_state": {
+                "success": {
+                  "count": 219,
+                  "execution_time": {
+                    "max": 8.158,
+                    "min": 0.462,
+                    "avg": 0.947
+                  }
+                }
+              }
+            },
+            "http://dl1.video.varzesh3.com": {
+              "per_state": {
+                "success": {
+                  "count": 106,
+                  "execution_time": {
+                    "max": 4.54,
+                    "min": 0.738,
+                    "avg": 1.376
+                  }
+                }
+              }
+            },
+            "http://static.anten.ir": {
+              "per_state": {
+                "success": {
+                  "count": 15,
+                  "execution_time": {
+                    "max": 32.397,
+                    "min": 5.594,
+                    "avg": 15.713
+                  }
+                },
+                "failed": {
+                  "count": 4,
+                  "execution_time": {
+                    "max": 41.391,
+                    "min": 0.679,
+                    "avg": 11.115
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "normalizes": {
+        "count": 991,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 988,
+            "execution_time": {
+              "max": 1644.408,
+              "min": 0.846,
+              "avg": 32.328
+            }
+          },
+          "failed": {
+            "count": 3,
+            "execution_time": {
+              "max": 0.411,
+              "min": 0.248,
+              "avg": 0.333
+            }
+          }
+        },
+        "extras": {}
+      },
+      "transcodes": {
+        "count": 3214,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 3096,
+            "execution_time": {
+              "max": 1024.508,
+              "min": 0.486,
+              "avg": 21.691
+            }
+          },
+          "failed": {
+            "count": 118,
+            "execution_time": {
+              "max": 30.504,
+              "min": 0.243,
+              "avg": 1.232
+            }
+          }
+        },
+        "extras": {}
+      },
+      "re_encodes": {
+        "count": 0,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "failed": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          }
+        },
+        "extras": {}
+      },
+      "subtitle_encodes": {
+        "count": 0,
+        "per_state": {
+          "in-progress": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "success": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          },
+          "failed": {
+            "count": 0,
+            "execution_time": {
+              "max": 0.0,
+              "min": 0.0,
+              "avg": 0.0
+            }
+          }
+        },
+        "extras": {}
+      }
+    }
+  },
+  "playlist": {
+    "total": {
+      "videos": {
+        "max": 47,
+        "min": 0,
+        "avg": 15.824
+      },
+      "count": 17
+    },
+    "not_empty": {
+      "videos": {
+        "max": 47,
+        "min": 1,
+        "avg": 17.933
+      },
+      "count": 15
+    }
+  },
+  "comment": {
+    "per_video": {
+      "max": 7,
+      "min": 1,
+      "avg": 2.069
+    },
+    "per_channel": {
+      "max": 24,
+      "min": 1,
+      "avg": 7.059
+    },
+    "per_author": {
+      "max": 23,
+      "min": 1,
+      "avg": 4.8
+    },
+    "count": 120
+  },
+  "like": {
+    "per_video": {
+      "max": 29,
+      "min": 1,
+      "avg": 1.719
+    },
+    "per_author": {
+      "max": 134,
+      "min": 1,
+      "avg": 14.564
+    },
+    "count": 1136
+  }
+}

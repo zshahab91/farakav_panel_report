@@ -1,0 +1,21 @@
+.component-datashow{
+  margin: convert-size(5,em) 1%;
+  display: inline-block;
+  .card-body{
+    h4{
+      font-size: convert-size(20,em) !important;
+      font-weight: bold;
+      color: $title-card;
+    }
+  }
+  .card-footer{
+    font-size: convert-size(16,em);
+  }
+}
+.extra-data{
+  h4{
+    margin: 1%;
+  }
+}
+
+

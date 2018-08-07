@@ -1,0 +1,14 @@
+.component-chart{
+  max-width: 99%;
+  .chart-box {
+    margin: 1%;
+    display: inline-block;
+    width: 99% !important;
+  }
+  .card-footer {
+    min-height: auto !important;
+    padding: 1% !important;
+    position: relative !important;
+  }
+}
+

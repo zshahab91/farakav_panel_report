@@ -1,0 +1,39 @@
+.component-report{
+  max-width: 100%;
+  margin: 1%;
+  .card{
+    min-height: auto !important;
+  }
+  .card-body{
+    flex: 0;
+    padding: 1% 0;
+  }
+  form {
+    .button-box{
+      line-height: convert-size(100,em);
+      margin-left: 1%;
+    }
+    .col-form-label{
+      padding-bottom: 0;
+      font-size: convert-size(13,em);
+    }
+    .form-control{
+      padding: 0.1rem 0.75rem;
+      //padding: convert-size(1,em)
+    }
+    .btn{
+      font-size: convert-size(13,em);
+      padding: convert-size(8,em);
+      vertical-align: super;
+      //border-radius: 50%;
+      width: convert-size(50,em);
+      height: convert-size(52,em);
+    }
+    label{
+      vertical-align: sub;
+    }
+    .btn-form{
+      padding-top: 0.13em;
+    }
+  }
+}

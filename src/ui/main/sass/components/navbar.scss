@@ -1,0 +1,17 @@
+.component-navbar {
+  border-bottom: convert-size(1,em) solid rgba(0, 0, 0, 0.31);
+  .navbar-brand{
+    font-size: convert-size(20,em);
+    .exact-active{
+      background: transparent;
+    }
+    a {
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+  .navbar-text{
+    font-size: convert-size(18,em);
+  }
+}
