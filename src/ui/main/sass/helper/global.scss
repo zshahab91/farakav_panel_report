@@ -10,16 +10,18 @@
   min-height: 100%;
   overflow-x: hidden;
   //direction: rtl;
-
+}
+.container {
+  padding: 25px 0;
 }
 [v-cloak]{
   display: none;
 }
 .no-margin{
-  margin: 0;
+  //margin: 0;
 }
 .no-padding{
-  padding: 0;
+  //padding: 0;
 }
 *,
 *::before,
@@ -36,6 +38,7 @@ h4,
 h5,
 h6 {
   color: $bg-navbar-active;
+  margin-bottom: 20px;
 }
 
 em {
@@ -69,16 +72,10 @@ nav li.router-link-exact-active {
   background-color: $bg-navbar-active ;
 }
 .page{
-  width: 100%;
+  //width: 100%;
   background-color: $bg-container-second ;
   //min-height: convert-size(1000,em);
   min-height: 61.7em;
-}
-.container-page{
-  padding: 0;
-  margin: 0 auto;
-  position: relative;
-
 }
 .card{
   border: 0.05em solid rgba(0, 0, 0, 0.31);
@@ -90,14 +87,14 @@ nav li.router-link-exact-active {
   font-weight: 300;
   border-bottom: 0.1em solid $bg-navbar-active;
   min-height: 3em;
-  margin: 0 1px;
+  //margin: 0 1px;
   position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
   vertical-align: middle;
   text-align: center;
-  padding: 4%;
+  //padding: 4%;
 }
 .alert{
   position: absolute !important;
@@ -108,24 +105,24 @@ nav li.router-link-exact-active {
 }
 .extra-data {
   h5 {
-    margin: 0 1%;
+    //margin: 0 1%;
   }
 }
 .title-chart {
   h6{
-    margin: 0 1%;
+    //margin: 0 1%;
   }
 }
 .title-chart-detail{
   h4{
-    margin: 0 2%;
+    //margin: 0 2%;
   }
 }
 .card-body {
-  padding: 1rem !important;
+  //padding: 1rem !important;
 }
 .navbar-brand{
-  margin-right: 0.37em;
+  //margin-right: 0.37em;
 }
 .loading{
   background: rgba(183, 181, 181, 0.63);
@@ -137,10 +134,13 @@ nav li.router-link-exact-active {
   height: 100%;
   z-index: 99;
   text-align: center;
-  padding-top: 20%;
+  //padding-top: 20%;
   font-size: convert-size(22,em);
-  span {
-    font-size: convert-size(25,em) !important;
-    font-weight: bold;
+  .box-loading{
+    margin-top: 25%;
+    span {
+      font-size: convert-size(25,em) !important;
+      font-weight: bold;
+    }
   }
 }

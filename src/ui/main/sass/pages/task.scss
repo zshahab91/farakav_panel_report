@@ -1,7 +1,10 @@
 .page-task{
   .show-detail-report{
-    display: inline-block;
-    margin: convert-size(5,em) auto;
+    display: block;
+    //margin: convert-size(5,em) auto;
+    .col-sm-12{
+      //width: 33% !important;
+    }
   }
 
 }

@@ -1,6 +1,6 @@
 .component-datashow{
-  margin: convert-size(5,em) 1%;
-  display: inline-block;
+  margin-bottom: convert-size(20,em);
+  width: 100%;
   .card-body{
     h4{
       font-size: convert-size(20,em) !important;
@@ -10,12 +10,24 @@
   }
   .card-footer{
     font-size: convert-size(16,em);
+    left: 1px;
+  }
+  &:first-child {
+    margin-left: 0;
+  }
+  &:last-child {
+    margin-right: 0
   }
 }
 .extra-data{
   h4{
-    margin: 1%;
+    //margin: 1%;
   }
 }
-
-
+.box{
+  background: $bg-sidebar-nav;
+  color: $white;
+  height: 200px;
+  padding: 10px;
+  margin: 5px auto;
+}

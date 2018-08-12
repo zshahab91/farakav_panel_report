@@ -1,5 +1,5 @@
 <template>
-  <div class="page page-404">
+  <div class="page-404">
     <h2>{{ $t('message.notFound') }}</h2>
   </div>
 </template>

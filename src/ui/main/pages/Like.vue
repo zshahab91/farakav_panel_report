@@ -1,49 +1,58 @@
 <template>
   <div
     v-if="dataReportVideo"
-    class="page page-like">
+    class="page-like">
     <Navbar :title="titlePage"/>
-    <b-container class="container-page">
+    <b-container>
       <b-row class="no-margin">
         <b-col cols="12">
           <Report/>
         </b-col>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReportVideo"
-            :width="widthVideo"
-            title="Show Data Of Video Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :width="widthChart"
-            :data="dataReportVideo"
-            :category="categoryReportVideo"
-            :chart-types-prop="typesChartVideo"
-            :title-chart="titleReportVideo"
-            unit="%"/>
-        </b-col>
-        <hr>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReportAuthor"
-            :width="widthAuthor"
-            title="Show Data Of Author Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :width="widthChart"
-            :data="dataReportAuthor"
-            :category="categoryReportAuthor"
-            :chart-types-prop="typesChartAuthor"
-            :title-chart="titleReportAuthor"
-            unit="%"/>
-        </b-col>
       </b-row>
+      <span v-if="noResult !== null ">
+        <h3>{{ noResult }}</h3>
+      </span>
+      <span v-else>
+        <b-row class="no-margin">
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReportVideo"
+              :width="widthVideo"
+              title="Show Data Of Video Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :width="widthChart"
+              :data="dataReportVideo"
+              :category="categoryReportVideo"
+              :chart-types-prop="typesChartVideo"
+              :title-chart="titleReportVideo"
+              unit="%"/>
+          </b-col>
+          <hr>
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReportAuthor"
+              :width="widthAuthor"
+              title="Show Data Of Author Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :width="widthChart"
+              :data="dataReportAuthor"
+              :category="categoryReportAuthor"
+              :chart-types-prop="typesChartAuthor"
+              :title-chart="titleReportAuthor"
+              unit="%"/>
+          </b-col>
+        </b-row>
+      </span>
     </b-container>
   </div>
 </template>
@@ -76,6 +85,9 @@ export default {
         section: window.location.pathname.slice(1)
       })
       return this.$route.meta.title
+    },
+    noResult () {
+      return this.$store.getters['report/getResult']
     },
     isFiltering () {
       return this.$store.getters['report/getFiltering']

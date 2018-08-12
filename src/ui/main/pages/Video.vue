@@ -1,59 +1,69 @@
 <template>
   <div
     v-if="dataReport"
-    class="page page-video">
+    class="page-video">
     <Navbar :title="titlePage"/>
-    <b-container class="container-page">
+    <b-container>
       <b-row class="no-margin">
         <b-col cols="12">
           <Report/>
         </b-col>
-        <b-col cols="12">
-          <Chart
-            :data="dataReport"
-            :category="categoryReport"
-            :chart-types-prop="typesChart"
-            :title-chart="titleReport"
-            :width="widthChart"
-            unit="%"/>
-        </b-col>
-        <hr>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReportVisit"
-            :width="widthVisit"
-            title="Show Data Of Visits Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :data="dataReportVisit "
-            :category="categoryReportVisit "
-            :chart-types-prop="typesChartVisit "
-            :title-chart="titleReportVisit "
-            :width="widthChart"
-            unit="%"/>
-        </b-col>
-        <hr>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReportChannel"
-            :width="widthChannel"
-            title="Show Data Of Per Channel Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :data="dataReportChannel"
-            :category="categoryReportChannel"
-            :chart-types-prop="typesChartChannel"
-            :title-chart="titleReportChannel"
-            :width="widthChart"
-            unit="%"/>
-        </b-col>
       </b-row>
+      <span v-if="noResult !== null ">
+        <h3>{{ noResult }}</h3>
+      </span>
+      <span v-else>
+        <b-row class="no-margin">
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :data="dataReport"
+              :category="categoryReport"
+              :chart-types-prop="typesChart"
+              :title-chart="titleReport"
+              :width="widthChart"
+              unit="%"/>
+          </b-col>
+          <hr>
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReportVisit"
+              :width="widthVisit"
+              title="Show Data Of Visits Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :data="dataReportVisit "
+              :category="categoryReportVisit "
+              :chart-types-prop="typesChartVisit "
+              :title-chart="titleReportVisit "
+              :width="widthChart"
+              unit="%"/>
+          </b-col>
+          <hr>
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReportChannel"
+              :width="widthChannel"
+              title="Show Data Of Per Channel Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :data="dataReportChannel"
+              :category="categoryReportChannel"
+              :chart-types-prop="typesChartChannel"
+              :title-chart="titleReportChannel"
+              :width="widthChart"
+              unit="%"/>
+          </b-col>
+        </b-row>
+      </span>
     </b-container>
   </div>
 
@@ -86,6 +96,9 @@ export default {
         section: window.location.pathname.slice(1)
       })
       return this.$route.meta.title
+    },
+    noResult () {
+      return this.$store.getters['report/getResult']
     },
     isFiltering () {
       return this.$store.getters['report/getFiltering']

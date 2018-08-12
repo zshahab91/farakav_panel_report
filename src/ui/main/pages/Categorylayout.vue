@@ -1,54 +1,63 @@
 <template>
   <div
     v-if="dataReportTotal"
-    class="page page-category-layout">
+    class=" page-category-layout">
     <Navbar :title="titlePage"/>
-    <b-container class="container-page">
+    <b-container>
       <b-row class="no-margin">
         <b-col cols="12">
           <Report/>
         </b-col>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReportTotal"
-            :width="width"
-            title="Show Data Of Total Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :width="widthChart"
-            :data="dataReportTotal"
-            :category="categoryReportTotal"
-            :chart-types-prop="typesChartTotal"
-            :title-chart="titleReportTotal"
-            unit="%"/>
-        </b-col>
       </b-row>
-      <b-row
-        v-for="(chart, index) in charts"
-        :key="index"
-        class="no-margin">
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="chart.data"
-            :width="width"
-            :title="chart.title"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :width="widthChart"
-            :data="chart.output"
-            :category="chart.category"
-            :chart-types-prop="chart.types"
-            :title-chart="chart.title"
-            unit="%"/>
-        </b-col>
-        <hr>
-      </b-row>
+      <span v-if="noResult !== null ">
+        <h3>{{ noResult }}</h3>
+      </span>
+      <span v-else>
+        <b-row class="no-margin">
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReportTotal"
+              :width="width"
+              title="Show Data Of Total Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :width="widthChart"
+              :data="dataReportTotal"
+              :category="categoryReportTotal"
+              :chart-types-prop="typesChartTotal"
+              :title-chart="titleReportTotal"
+              unit="%"/>
+          </b-col>
+        </b-row>
+        <b-row
+          v-for="(chart, index) in charts"
+          :key="index"
+          class="no-margin">
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="chart.data"
+              :width="width"
+              :title="chart.title"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :width="widthChart"
+              :data="chart.output"
+              :category="chart.category"
+              :chart-types-prop="chart.types"
+              :title-chart="chart.title"
+              unit="%"/>
+          </b-col>
+          <hr>
+        </b-row>
+      </span>
     </b-container>
   </div>
 
@@ -81,6 +90,9 @@ export default {
         section: window.location.pathname.slice(1)
       })
       return this.$route.meta.title
+    },
+    noResult () {
+      return this.$store.getters['report/getResult']
     },
     isFiltering () {
       return this.$store.getters['report/getFiltering']

@@ -1,6 +1,6 @@
 @function convert-size($old-unit,$new-unit){
   @if( $new-unit == 'em' ) {
-    @return ( $old-unit / 20) * 1em;
+    @return ( $old-unit / 16) * 1em;
   }@else if( $new-unit == 'rem' ){
     @return ( $old-unit / 16 ) *1rem;
   }

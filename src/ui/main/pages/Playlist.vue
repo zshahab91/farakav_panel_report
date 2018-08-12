@@ -1,49 +1,58 @@
 <template>
   <div
     v-if="dataReport"
-    class="page page-playlist">
+    class="page-playlist">
     <Navbar :title="titlePage"/>
-    <b-container class="container-page">
+    <b-container>
       <b-row class="no-margin">
         <b-col cols="12">
           <Report/>
         </b-col>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReport"
-            :width="width"
-            title="Show Data Of Total Playlist Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :width="widthChart"
-            :data="dataReport"
-            :category="categoryReport"
-            :chart-types-prop="typesChart"
-            :title-chart="titleReport"
-            unit="%"/>
-        </b-col>
-        <hr>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReportNotEmpty"
-            :width="widthNotEmpty"
-            title="Show Data Of Not Empty Playlist Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :width="widthChart"
-            :data="dataReportNotEmpty"
-            :category="categoryReportNotEmpty"
-            :chart-types-prop="typesChartNotEmpty"
-            :title-chart="titleReportNotEmpty"
-            unit="%"/>
-        </b-col>
       </b-row>
+      <span v-if="noResult !== null ">
+        <h3>{{ noResult }}</h3>
+      </span>
+      <span v-else>
+        <b-row class="no-margin">
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReport"
+              :width="width"
+              title="Show Data Of Total Playlist Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :width="widthChart"
+              :data="dataReport"
+              :category="categoryReport"
+              :chart-types-prop="typesChart"
+              :title-chart="titleReport"
+              unit="%"/>
+          </b-col>
+          <hr>
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReportNotEmpty"
+              :width="widthNotEmpty"
+              title="Show Data Of Not Empty Playlist Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :width="widthChart"
+              :data="dataReportNotEmpty"
+              :category="categoryReportNotEmpty"
+              :chart-types-prop="typesChartNotEmpty"
+              :title-chart="titleReportNotEmpty"
+              unit="%"/>
+          </b-col>
+        </b-row>
+      </span>
     </b-container>
   </div>
 </template>
@@ -76,6 +85,9 @@ export default {
         section: window.location.pathname.slice(1)
       })
       return this.$route.meta.title
+    },
+    noResult () {
+      return this.$store.getters['report/getResult']
     },
     dataReport () {
       return this.$store.getters['report/getPlaylistsReport'].total.output

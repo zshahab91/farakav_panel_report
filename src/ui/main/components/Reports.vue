@@ -6,63 +6,64 @@
         class="form"
         @submit="onSubmit"
         @reset="onReset">
-        <b-container class="no-padding">
-          <b-row
-            class="no-margin">
-            <b-col
-              md="5"
-              sm="12"
-              class="no-padding text-center">
-              <b-row class="no-margin">
-                <b-col
-                  sm="3"
-                  md="5"
-                  class="no-padding"><label for="startDate">{{ $t('form.startDate') }}:</label></b-col>
-                <b-col
-                  sm="9"
-                  md="7"
-                  class="no-padding">
-                  <b-form-input
-                    id="startDate"
-                    v-model="form.start_date"
-                    type="date"/>
-                </b-col>
-              </b-row>
-            </b-col>
-            <b-col
-              md="5"
-              sm="12"
-              class="no-padding text-center">
-              <b-row class="no-margin">
-                <b-col
-                  sm="3"
-                  md="5"
-                  class="no-padding"><label for="endDate">{{ $t('form.endDate') }}:</label></b-col>
-                <b-col
-                  sm="9"
-                  md="7"
-                  class="no-padding">
-                  <b-form-input
-                    id="endDate"
-                    v-model="form.end_date"
-                    type="date"/>
-                </b-col>
-              </b-row>
-            </b-col>
-            <b-col
-              md="2"
-              sm="12"
-              class="text-center no-padding btn-form">
-              <b-button
-                type="submit"
-                variant="primary"><i class="fa fa-check"/></b-button>
-              <b-button
-                type="submit"
-                variant="error"
-                @click="onReset"><i class="fa fa-close"/></b-button>
-            </b-col>
-          </b-row>
-        </b-container>
+        <b-row>
+          <b-col
+            lg="5"
+            sm="12"
+            class="text-left">
+            <b-row>
+              <b-col
+                sm="12"><label for="startDate">{{ $t('form.startDate') }}:</label></b-col>
+              <b-col
+                sm="12">
+                <b-form-input
+                  id="startDate"
+                  v-model="form.start_date"
+                  type="date"
+                  class="p-0"/>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col
+            lg="5"
+            sm="12"
+            class=" text-left">
+            <b-row>
+              <b-col
+                sm="12"><label for="endDate">{{ $t('form.endDate') }}:</label></b-col>
+              <b-col
+                sm="12">
+                <b-form-input
+                  id="endDate"
+                  v-model="form.end_date"
+                  type="date"
+                  class="p-0" />
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col
+            lg="2"
+            sm="12"
+            class="btn-form">
+            <b-row>
+              <b-col
+                sm="12"
+                lg="6">
+                <b-button
+                  type="submit"
+                  variant="primary"><i class="fa fa-check"/></b-button>
+              </b-col>
+              <b-col
+                sm="12"
+                lg="6">
+                <b-button
+                  type="submit"
+                  variant="error"
+                  @click="onReset"><i class="fa fa-close"/></b-button>
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
       </b-form>
     </b-card>
   </div>

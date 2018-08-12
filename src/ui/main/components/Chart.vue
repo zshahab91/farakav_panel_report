@@ -1,19 +1,19 @@
 <template>
-  <div class="component-chart">
-    <span
+  <div class="row m-0">
+    <div
       v-for="(chartOption, index) in chartOptions"
-      :key="index">
+      :key="index"
+      class="component-chart">
       <b-card
-        :style="{width: width + '%' }"
         :footer="unit"
         footer-tag="footer"
-        class="mb-2 text-center chart-box">
+        class="text-center chart-box col-sm-12">
         <highcharts
           :options="chartOption"
           :update-args="updateArgs"
           class="chart" />
       </b-card>
-    </span>
+    </div>
   </div>
 </template>
 

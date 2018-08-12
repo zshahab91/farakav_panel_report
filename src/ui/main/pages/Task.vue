@@ -1,87 +1,94 @@
 <template>
   <div
     v-if="charts || chartsTotal"
-    class="page page-task">
+    class="page-task">
     <Navbar :title="titlePage"/>
-    <b-container
-      class="container-page">
-      <b-row
-        class="no-margin">
+    <b-container>
+      <b-row>
         <b-col cols="12">
           <Report/>
         </b-col>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReport"
-            :width="width"
-            title="Show Data Of HomePage Layout Report"/>
-        </b-col>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <Chart
-            :width="widthChart"
-            :data="dataReport"
-            :category="categoryReport"
-            :chart-types-prop="typesChart"
-            :title-chart="titleReport"
-            unit="%"/>
-        </b-col>
       </b-row>
-      <span class="title-chart-detail">
-        <h4>{{ $t('message.detailData') }} :</h4>
-        <b-row
-          v-for="(chart, index) in charts"
-          :key="index"
-          class="no-margin">
+      <span v-if="noResult !== null ">
+        <h3>{{ noResult }}</h3>
+      </span>
+      <span v-else>
+        <b-row class="no-margin">
           <b-col
             v-if="!isFiltering"
             cols="12">
             <DataShow
-              :data-extra="chart.data"
-              :width="widthChartData"
-              :title="chart.title"/>
+              :data-extra="extraReport"
+              :width="width"
+              title="Show Data Of HomePage Layout Report"/>
           </b-col>
           <b-col
             v-if="!isFiltering"
             cols="12">
             <Chart
+              :is-filter="false"
               :width="widthChart"
-              :data="chart.output"
-              :category="chart.category"
-              :chart-types-prop="chart.types"
-              :title-chart="chart.title"
+              :data="dataReport"
+              :category="categoryReport"
+              :chart-types-prop="typesChart"
+              :title-chart="titleReport"
               unit="%"/>
           </b-col>
-          <hr>
         </b-row>
-      </span>
-      <span
-        v-if="isFiltering"
-        class="title-chart">
-        <b-col
-          v-for="(chartObj, index) in chartsTotal"
-          :key="index"
-          class="no-margin"
-          cols="12">
-          <h6> {{ chartObj.titleChart }} :</h6>
-          <div
-            v-for="(chart, inx) in chartObj.charts"
-            :key="inx"
-            :style="{ width: widthChartFilter + '%' }"
-            class="show-detail-report">
-            <Chart
-              :width="widthChart"
-              :data="chart.output"
-              :category="chart.category"
-              :chart-types-prop="chart.types"
-              :title-chart="chart.title"
-              unit="%"/>
-          </div>
-          <hr>
-        </b-col>
+        <span class="title-chart-detail">
+          <h4>{{ $t('message.detailData') }} :</h4>
+          <b-row
+            v-for="(chart, index) in charts"
+            :key="index">
+            <b-col
+              v-if="!isFiltering"
+              cols="12">
+              <DataShow
+                :data-extra="chart.data"
+                :width="widthChartData"
+                :title="chart.title"/>
+            </b-col>
+            <b-col
+              v-if="!isFiltering"
+              cols="12">
+              <Chart
+                :is-filter="false"
+                :width="widthChart"
+                :data="chart.output"
+                :category="chart.category"
+                :chart-types-prop="chart.types"
+                :title-chart="chart.title"
+                unit="%"/>
+            </b-col>
+            <hr>
+          </b-row>
+        </span>
+        <span
+          v-if="isFiltering"
+          class="title-chart">
+          <b-col
+            v-for="(chartObj, index) in chartsTotal"
+            :key="index"
+            class="p-0"
+            cols="12">
+            <h6> {{ chartObj.titleChart }} :</h6>
+            <div
+              v-for="(chart, inx) in chartObj.charts"
+              :key="inx"
+              class="show-detail-report"
+              cols="12">
+              <Chart
+                :is-filter="true"
+                :width="widthChart"
+                :data="chart.output"
+                :category="chart.category"
+                :chart-types-prop="chart.types"
+                :title-chart="chart.title"
+                unit="%"/>
+            </div>
+            <hr>
+          </b-col>
+        </span>
       </span>
     </b-container>
   </div>
@@ -112,6 +119,9 @@ export default {
   computed: {
     titlePage () {
       return this.$route.meta.title
+    },
+    noResult () {
+      return this.$store.getters['report/getResult']
     },
     isFiltering () {
       return this.$store.getters['report/getFiltering']

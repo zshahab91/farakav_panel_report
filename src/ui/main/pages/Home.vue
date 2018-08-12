@@ -1,26 +1,32 @@
 <template>
   <div
     v-if="dataHome"
-    class="page page-home">
+    class=" page-home">
     <Navbar :title="titlePage"/>
-    <b-container class="container-page">
-      <b-row class="no-margin">
-        <b-col cols="12">
-          <DataShow
-            :data-extra="dataHome.data"
-            :width="width"
-            title="Show Data Of Home Page Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :data="dataHome.output"
-            :category="dataHome.category"
-            :chart-types-prop="dataHome.types"
-            :title-chart="dataHome.title"
-            :width="widthChart"
-            unit=" "/>
-        </b-col>
-      </b-row>
+    <b-container>
+      <span v-if="noResult !== null ">
+        <h3>{{ noResult }}</h3>
+      </span>
+      <span v-else>
+        <b-row class="no-margin">
+          <b-col cols="12">
+            <DataShow
+              :data-extra="dataHome.data"
+              :width="width"
+              title="Show Data Of Home Page Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :data="dataHome.output"
+              :category="dataHome.category"
+              :chart-types-prop="dataHome.types"
+              :title-chart="dataHome.title"
+              :width="widthChart"
+              unit=" "/>
+          </b-col>
+        </b-row>
+      </span>
     </b-container>
   </div>
 </template>
@@ -44,6 +50,9 @@ export default {
   computed: {
     titlePage () {
       return this.$route.meta.title
+    },
+    noResult () {
+      return this.$store.getters['report/getResult']
     },
     dataHome () {
       return this.$store.getters['report/getHomeDataPage']

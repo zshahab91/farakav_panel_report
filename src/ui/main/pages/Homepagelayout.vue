@@ -1,31 +1,37 @@
 <template>
   <div
     v-if="dataReport"
-    class="page page-home-layout">
+    class="page-home-layout">
     <Navbar :title="titlePage"/>
-    <b-container class="container-page">
-      <b-row class="no-margin">
-        <b-col cols="12">
-          <Report/>
-        </b-col>
-        <b-col
-          v-if="!isFiltering"
-          cols="12">
-          <DataShow
-            :data-extra="extraReport"
-            :width="width"
-            title="Show Data Of HomePage Layout Report"/>
-        </b-col>
-        <b-col cols="12">
-          <Chart
-            :width="widthChart"
-            :data="dataReport"
-            :category="categoryReport"
-            :chart-types-prop="typesChart"
-            :title-chart="titleReport"
-            unit="%"/>
-        </b-col>
-      </b-row>
+    <b-container>
+      <span v-if="noResult !== null ">
+        <h3>{{ noResult }}</h3>
+      </span>
+      <span v-else>
+        <b-row class="no-margin">
+          <b-col cols="12">
+            <Report/>
+          </b-col>
+          <b-col
+            v-if="!isFiltering"
+            cols="12">
+            <DataShow
+              :data-extra="extraReport"
+              :width="width"
+              title="Show Data Of HomePage Layout Report"/>
+          </b-col>
+          <b-col cols="12">
+            <Chart
+              :is-filter="false"
+              :width="widthChart"
+              :data="dataReport"
+              :category="categoryReport"
+              :chart-types-prop="typesChart"
+              :title-chart="titleReport"
+              unit="%"/>
+          </b-col>
+        </b-row>
+      </span>
     </b-container>
   </div>
 </template>
@@ -60,6 +66,9 @@ export default {
     },
     isFiltering () {
       return this.$store.getters['report/getFiltering']
+    },
+    noResult () {
+      return this.$store.getters['report/getResult']
     },
     dataReport () {
       return this.$store.getters['report/getHomeReport'].output

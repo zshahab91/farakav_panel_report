@@ -14,7 +14,8 @@ const moduleReport = {
     isDate: false,
     isFilter: false,
     noData: false,
-    loading: false
+    loading: false,
+    noResult: null
   },
   mutations: {
     setDate (state, payload) {
@@ -27,6 +28,9 @@ const moduleReport = {
       } else {
         state.from = payload.startDate
         state.to = payload.endDate
+        state.date = null
+        state.isDate = false
+        state.reports = []
       }
     },
     getEmptyReports: (state) => {
@@ -40,10 +44,11 @@ const moduleReport = {
       state.loading = true
       state.reports = []
       state.isFilter = false
+      state.noResult = null
       let params = ''
       const section = payload.section !== null || payload.section !== undefined ? payload.section : null
       _.forOwn(state, (value, key) => {
-        if (key !== 'reports' && key !== 'section' && key !== 'isFilter' && key !== 'noData' && key !== 'isDate' && key !== 'loading' && value !== null) {
+        if (key !== 'reports' && key !== 'section' && key !== 'isFilter' && key !== 'noData' && key !== 'isDate' && key !== 'loading' && key !== 'noResult' && value !== null) {
           let param = key + '=' + value + '&'
           params += param
         }
@@ -75,9 +80,15 @@ const moduleReport = {
         })
         .catch((err) => {
           state.loading = false
-          console.log('err1 is:', err)
+          console.log('err is:', err)
+          err = err.toString()
+          if (err.includes('404')) {
+            state.noResult = 'No Data For Show...!'
+          } else {
+            window.location.href = '/' + state.section
+          }
           // this.$router.replace('/')
-          // window.location.href = '/error'
+          // window.location.href = '/' + state.section
           return err
         })
     }
@@ -95,6 +106,9 @@ const moduleReport = {
     },
     getData: (state) => {
       return state.reports
+    },
+    getResult: (state) => {
+      return state.noResult
     },
     getLoading: (state) => {
       return state.loading
@@ -670,7 +684,6 @@ const moduleReport = {
       let notEmptyOutput = []
       let dataExtra = []
       if (state.isFilter && state.reports.length !== undefined) {
-        console.log('1')
         let dates = []
         const dataMinTotal = []
         const dataMaxTotal = []

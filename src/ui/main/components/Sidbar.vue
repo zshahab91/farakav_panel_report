@@ -3,10 +3,12 @@
   <div class="s-layout__sidebar">
     <a
       class="s-sidebar__trigger">
-      <i class="fa fa-bars"/>
+      <i
+        class="fa fa-bars fa-2x"
+        @click="showSubMenuFunc"/>
     </a>
 
-    <nav class="s-sidebar__nav">
+    <nav :class="[showSubMenu ? 'menu show-sub-menu-class' : 'menu']">
       <ul>
         <li>
           <router-link
@@ -18,35 +20,35 @@
               width="100">
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/homepage_layouts"
             class="s-sidebar__nav-link">
-            <i class="fa fa-home"/><em>{{ $t("sidebar.homePageLayout") }}</em>
+            <i class="fa fa-home "/><em>{{ $t("sidebar.homePageLayout") }}</em>
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/category_layouts"
             class="s-sidebar__nav-link">
             <i class="fa fa-user"/><em> {{ $t("sidebar.categoryLayout") }}</em>
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/channels"
             class="s-sidebar__nav-link">
             <i class="fa fa-users"/><em> {{ $t("sidebar.channel") }}</em>
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/comments"
             class="s-sidebar__nav-link">
             <i class="fa fa-comments"/><em> {{ $t("sidebar.comment") }}</em>
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/likes"
             class="s-sidebar__nav-link">
@@ -60,14 +62,14 @@
             <i class="fa fa-video-camera"/><em> {{ $t("sidebar.video") }}</em>
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/tasks"
             class="s-sidebar__nav-link">
             <i class="fa fa-tasks"/><em>{{ $t("sidebar.task") }}</em>
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/playlists"
             class="s-sidebar__nav-link">
@@ -81,6 +83,17 @@
 
 <script>
 export default {
-  name: 'Sidbar'
+  name: 'Sidbar',
+  data () {
+    return {
+      showSubMenu: false
+    }
+  },
+  methods: {
+    showSubMenuFunc () {
+      this.showSubMenu = !this.showSubMenu
+      console.log('this.showSubMenu is:', this.showSubMenu)
+    }
+  }
 }
 </script>

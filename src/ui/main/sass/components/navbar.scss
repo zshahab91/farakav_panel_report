@@ -2,6 +2,7 @@
   border-bottom: convert-size(1,em) solid rgba(0, 0, 0, 0.31);
   .navbar-brand{
     font-size: convert-size(20,em);
+    margin-right: 0;
     .exact-active{
       background: transparent;
     }
@@ -13,5 +14,8 @@
   }
   .navbar-text{
     font-size: convert-size(18,em);
+  }
+  .seprator{
+    margin: 0 convert-size(5,em);
   }
 }

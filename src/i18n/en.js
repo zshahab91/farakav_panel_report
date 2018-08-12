@@ -36,6 +36,8 @@ export const En = {
     like: 'Like',
     playlist: 'Playlist',
     task: 'Task',
-    video: 'Video'
+    video: 'Video',
+    videoMaster: 'Video Master',
+    videoMasterNewChange: 'Video Master new change'
   }
 }
