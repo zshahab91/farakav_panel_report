@@ -11,6 +11,8 @@
   .card-footer{
     font-size: convert-size(16,em);
     left: 1px;
+    right: 1px;
+    bottom: 1px;
   }
   &:first-child {
     margin-left: 0;

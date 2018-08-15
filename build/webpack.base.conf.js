@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const utils = require('./utils')
+const webpack = require('webpack')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
@@ -33,6 +34,13 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      Vue: ['vue/dist/vue.esm.js', 'default'],
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      $: 'jquery',
+      moment: 'moment',
+    }),
     // Stylelint for all imports
     // https://github.com/vieron/stylelint-webpack-plugin
     new StyleLintPlugin({

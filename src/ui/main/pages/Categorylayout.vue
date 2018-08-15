@@ -1,12 +1,20 @@
 <template>
   <div
-    v-if="dataReportTotal"
+    v-if="isReadyData"
     class=" page-category-layout">
-    <Navbar :title="titlePage"/>
+    <Navbar
+      :title="titlePage"
+      @changeTodayDate="changeDateTodayDone"/>
     <b-container>
       <b-row class="no-margin">
         <b-col cols="12">
-          <Report/>
+          <TableShow
+            :data-extra="extraReportTotal"
+            title="Show Data Of Total Filter Report"
+          />
+        </b-col>
+        <b-col cols="12">
+          <FilterDate @change="changeDateDone"/>
         </b-col>
       </b-row>
       <span v-if="noResult !== null ">
@@ -14,14 +22,6 @@
       </span>
       <span v-else>
         <b-row class="no-margin">
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportTotal"
-              :width="width"
-              title="Show Data Of Total Report"/>
-          </b-col>
           <b-col cols="12">
             <Chart
               :is-filter="false"
@@ -65,7 +65,7 @@
 
 <script>
 import Navbar from '../components/Navbar'
-import Report from '../components/Reports'
+import FilterDate from '../components/Filter'
 import Chart from '../components/Chart'
 import DataShow from '../components/Datashow'
 import TableShow from '../components/Table'
@@ -73,7 +73,7 @@ export default {
   name: 'Categorylayout',
   components: {
     Navbar,
-    Report,
+    FilterDate,
     Chart,
     DataShow,
     TableShow
@@ -86,8 +86,8 @@ export default {
   computed: {
     titlePage () {
       this.$store.dispatch({
-        type: 'report/getSection',
-        section: window.location.pathname.slice(1)
+        type: 'filter/setSectionAction',
+        section: 'category_layouts'
       })
       return this.$route.meta.title
     },
@@ -95,45 +95,77 @@ export default {
       return this.$store.getters['report/getResult']
     },
     isFiltering () {
-      return this.$store.getters['report/getFiltering']
+      return this.$store.getters['filter/getFiltering']
+    },
+    isReadyData () {
+      return this.$store.getters['report/getCategoryReport'].readyData
+    },
+    dataReportRead () {
+      return this.$store.getters['report/getCategoryReport'].filter
     },
     dataReportTotal () {
-      return this.$store.getters['report/getCategoryReport'].total.output
+      return this.$store.getters['report/getCategoryReport'].filter.total.output
     },
     categoryReportTotal () {
-      return this.$store.getters['report/getCategoryReport'].total.category
+      return this.$store.getters['report/getCategoryReport'].filter.total.category
     },
     extraReportTotal () {
-      return this.$store.getters['report/getCategoryReport'].total.data
+      console.log('table is:', this.$store.getters['report/getCategoryReport'].table.total.data)
+      return this.$store.getters['report/getCategoryReport'].table.total.data
     },
     titleReportTotal () {
-      return this.$store.getters['report/getCategoryReport'].total.title
+      return this.$store.getters['report/getCategoryReport'].filter.total.title
     },
     width () {
       let col
-      if (this.$store.getters['report/getCategoryReport'].total.data.length > 4) {
+      if (this.$store.getters['report/getCategoryReport'].filter.total.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getCategoryReport'].total.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getCategoryReport'].filter.total.data.length * 1) - 2)
       }
       return col
     },
     typesChartTotal () {
-      return this.$store.getters['report/getCategoryReport'].total.types
+      return this.$store.getters['report/getCategoryReport'].filter.total.types
     },
     charts () {
-      return this.$store.getters['report/getCategoryReport'].charts
+      return this.$store.getters['report/getCategoryReport'].filter.charts
     }
   },
   mounted () {
     this.init()
   },
+  created: function () {
+    this.$store.dispatch({
+      type: 'report/emptyReports',
+      method: 'method'
+    })
+    this.$store.dispatch({
+      type: 'report/emptyTable',
+      method: 'method'
+    })
+  },
   methods: {
+    changeDateDone (event) {
+      this.init()
+    },
+    changeDateTodayDone () {
+      this.init()
+    },
     init () {
+      this.$store.dispatch({
+        type: 'filter/setSectionAction',
+        section: 'category_layouts'
+      })
       this.$store.dispatch({
         type: 'report/getReportAction',
         method: 'method',
-        section: window.location.pathname.slice(1)
+        section: 'category_layouts'
+      })
+      this.$store.dispatch({
+        type: 'report/getReportActionOneDay',
+        method: 'method',
+        section: 'category_layouts'
       })
     }
   }

@@ -22,8 +22,8 @@ export const En = {
     detailData: 'Show Detail Off Data Report'
   },
   form: {
-    startDate: 'Start Date',
-    endDate: 'End Date',
+    startDate: 'From',
+    endDate: 'To',
     typeReport: 'Type Report',
     submit: 'Submit',
     reset: 'Reset'

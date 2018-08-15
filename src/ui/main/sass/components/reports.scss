@@ -1,37 +1,18 @@
-.component-report{
-  margin-bottom: convert-size(20,em);
-  font-size: convert-size(14,em);
-  .card{
+.component-report {
+  margin-bottom: convert-size(20, em);
+  font-size: convert-size(14, em);
+  .card {
     min-height: auto !important;
   }
-  .card-body{
-    padding: convert-size(10,em);
+  .card-body {
+    padding: convert-size(10, em);
   }
   form {
-    .button-box{
-      line-height: convert-size(100,em);
-      //margin-left: 1%;
+    .button-box {
+      line-height: convert-size(100, em);
     }
-    .col-form-label{
-      //padding-bottom: 0;
-      font-size: convert-size(13,em);
-    }
-    .form-control{
-      //padding: 0.1rem 0.75rem;
-
-    }
-    .btn{
-      font-size: convert-size(10,em);
-      //padding: convert-size(8,em);
-      vertical-align: text-top;
-      //border-radius: 50%;
-      width: 100%;
-    }
-    label{
+    label {
       margin-bottom: 0;
-    }
-    .btn-form{
-      margin-top: convert-size(20,em)
     }
   }
 }

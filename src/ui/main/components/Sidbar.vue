@@ -13,6 +13,8 @@
         <li>
           <router-link
             to="/"
+            class-active=""
+            exact-active-class=""
             class="s-sidebar__nav-link text-center logo">
             <img
               src="../../../../static/img/logo.png"
@@ -55,7 +57,7 @@
             <i class="fa fa-thumbs-up"/><em> {{ $t("sidebar.like") }}</em>
           </router-link>
         </li>
-        <li>
+        <li @click="showSubMenuFunc">
           <router-link
             to="/videos"
             class="s-sidebar__nav-link">

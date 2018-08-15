@@ -12,7 +12,7 @@
   //direction: rtl;
 }
 .container {
-  padding: 25px 0;
+  padding: 25px;
 }
 [v-cloak]{
   display: none;
@@ -85,10 +85,10 @@ nav li.router-link-exact-active {
 .card-footer {
   background-color: $bg-card-footer;
   font-weight: 300;
-  border-bottom: 0.1em solid $bg-navbar-active;
   min-height: 3em;
   //margin: 0 1px;
   position: absolute;
+  height: 3em;
   bottom: 0;
   right: 0;
   left: 0;
@@ -120,6 +120,7 @@ nav li.router-link-exact-active {
 }
 .card-body {
   //padding: 1rem !important;
+  padding: 0.9rem 1.25rem !important;
 }
 .navbar-brand{
   //margin-right: 0.37em;

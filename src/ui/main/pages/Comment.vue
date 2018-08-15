@@ -1,12 +1,37 @@
 <template>
   <div
-    v-if="dataReportVideo"
+    v-if="isReadyData"
     class="page-comment">
-    <Navbar :title="titlePage"/>
+    <Navbar
+      :title="titlePage"
+      @changeTodayDate="changeDateTodayDone"/>
     <b-container>
       <b-row class="no-margin">
+        <b-col
+          cols="4">
+          <TableShow
+            :data-extra="extraReportVideo"
+            :width="widthVideo"
+            title="Video Report"/>
+        </b-col>
+        <hr>
+        <b-col
+          cols="4">
+          <TableShow
+            :data-extra="extraReportChannel"
+            :width="widthAuthor"
+            title="Channel Report"/>
+        </b-col>
+        <hr>
+        <b-col
+          cols="4">
+          <TableShow
+            :data-extra="extraReportAuthor"
+            :width="widthAuthor"
+            title="Author Report"/>
+        </b-col>
         <b-col cols="12">
-          <Report/>
+          <FilterDate @change="changeDateDone"/>
         </b-col>
       </b-row>
       <span v-if="noResult !== null ">
@@ -14,14 +39,6 @@
       </span>
       <span v-else>
         <b-row class="no-margin">
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportVideo"
-              :width="widthVideo"
-              title="Show Data Of Video Report"/>
-          </b-col>
           <b-col cols="12">
             <Chart
               :is-filter="false"
@@ -32,15 +49,6 @@
               :title-chart="titleReportVideo"
               unit="%"/>
           </b-col>
-          <hr>
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportAuthor"
-              :width="widthAuthor"
-              title="Show Data Of Author Report"/>
-          </b-col>
           <b-col cols="12">
             <Chart
               :is-filter="false"
@@ -50,15 +58,6 @@
               :chart-types-prop="typesChartAuthor"
               :title-chart="titleReportAuthor"
               unit="%"/>
-          </b-col>
-          <hr>
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportChannel"
-              :width="widthAuthor"
-              title="Show Data Of Channel Report"/>
           </b-col>
           <b-col cols="12">
             <Chart
@@ -78,7 +77,7 @@
 
 <script>
 import Navbar from '../components/Navbar'
-import Report from '../components/Reports'
+import FilterDate from '../components/Filter'
 import Chart from '../components/Chart'
 import DataShow from '../components/Datashow'
 import TableShow from '../components/Table'
@@ -86,7 +85,7 @@ export default {
   name: 'Comment',
   components: {
     Navbar,
-    Report,
+    FilterDate,
     Chart,
     DataShow,
     TableShow
@@ -99,99 +98,130 @@ export default {
   computed: {
     titlePage () {
       this.$store.dispatch({
-        type: 'report/getSection',
-        section: window.location.pathname.slice(1)
+        type: 'filter/setSectionAction',
+        section: 'comments'
       })
       return this.$route.meta.title
     },
     isFiltering () {
-      return this.$store.getters['report/getFiltering']
+      return this.$store.getters['filter/getFiltering']
+    },
+    isReadyData () {
+      return this.$store.getters['report/getCommentReport'].readyData
     },
     noResult () {
       return this.$store.getters['report/getResult']
     },
+    dataReport () {
+      return this.$store.getters['report/getCommentReport'].filter
+    },
     dataReportVideo () {
-      return this.$store.getters['report/getCommentReport'].video.output
+      return this.$store.getters['report/getCommentReport'].filter.video.output
     },
     categoryReportVideo () {
-      return this.$store.getters['report/getCommentReport'].video.category
+      return this.$store.getters['report/getCommentReport'].filter.video.category
     },
     extraReportVideo () {
-      return this.$store.getters['report/getCommentReport'].video.data
+      return this.$store.getters['report/getCommentReport'].table.video.data
     },
     titleReportVideo () {
-      return this.$store.getters['report/getCommentReport'].video.title
+      return this.$store.getters['report/getCommentReport'].filter.video.title
     },
     widthVideo () {
       let col
-      if (this.$store.getters['report/getCommentReport'].video.data.length > 4) {
+      if (this.$store.getters['report/getCommentReport'].filter.video.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getCommentReport'].video.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getCommentReport'].filter.video.data.length * 1) - 2)
       }
       return col
     },
     typesChartVideo () {
-      return this.$store.getters['report/getCommentReport'].video.types
+      return this.$store.getters['report/getCommentReport'].filter.video.types
     },
     dataReportAuthor () {
-      return this.$store.getters['report/getCommentReport'].author.output
+      return this.$store.getters['report/getCommentReport'].filter.author.output
     },
     categoryReportAuthor () {
-      return this.$store.getters['report/getCommentReport'].author.category
+      return this.$store.getters['report/getCommentReport'].filter.author.category
     },
     extraReportAuthor () {
-      return this.$store.getters['report/getCommentReport'].author.data
+      return this.$store.getters['report/getCommentReport'].table.author.data
     },
     titleReportAuthor () {
-      return this.$store.getters['report/getCommentReport'].author.title
+      return this.$store.getters['report/getCommentReport'].filter.author.title
     },
     widthAuthor () {
       let col
-      if (this.$store.getters['report/getCommentReport'].author.data.length > 4) {
+      if (this.$store.getters['report/getCommentReport'].filter.author.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getCommentReport'].author.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getCommentReport'].filter.author.data.length * 1) - 2)
       }
       return col
     },
     typesChartAuthor () {
-      return this.$store.getters['report/getCommentReport'].author.types
+      return this.$store.getters['report/getCommentReport'].filter.author.types
     },
     dataReportChannel () {
-      return this.$store.getters['report/getCommentReport'].channel.output
+      return this.$store.getters['report/getCommentReport'].filter.channel.output
     },
     categoryReportChannel () {
-      return this.$store.getters['report/getCommentReport'].channel.category
+      return this.$store.getters['report/getCommentReport'].filter.channel.category
     },
     extraReportChannel () {
-      return this.$store.getters['report/getCommentReport'].channel.data
+      return this.$store.getters['report/getCommentReport'].table.channel.data
     },
     titleReportChannel () {
-      return this.$store.getters['report/getCommentReport'].channel.title
+      return this.$store.getters['report/getCommentReport'].filter.channel.title
     },
     widthChannel () {
       let col
-      if (this.$store.getters['report/getCommentReport'].channel.data.length > 4) {
+      if (this.$store.getters['report/getCommentReport'].filter.channel.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getCommentReport'].channel.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getCommentReport'].filter.channel.data.length * 1) - 2)
       }
       return col
     },
     typesChartChannel () {
-      return this.$store.getters['report/getCommentReport'].channel.types
+      return this.$store.getters['report/getCommentReport'].filter.channel.types
     }
   },
   mounted () {
     this.init()
   },
+  created: function () {
+    this.$store.dispatch({
+      type: 'report/emptyReports',
+      method: 'method'
+    })
+    this.$store.dispatch({
+      type: 'report/emptyTable',
+      method: 'method'
+    })
+  },
   methods: {
+    changeDateDone (event) {
+      this.init()
+    },
+    changeDateTodayDone () {
+      this.init()
+    },
     init () {
+      this.$store.dispatch({
+        type: 'filter/setSectionAction',
+        section: 'comments'
+      })
       this.$store.dispatch({
         type: 'report/getReportAction',
         method: 'method',
-        section: window.location.pathname.slice(1)
+        section: 'comments'
+      })
+      this.$store.dispatch({
+        type: 'report/getReportActionOneDay',
+        method: 'method',
+        section: 'comments'
       })
     }
   }

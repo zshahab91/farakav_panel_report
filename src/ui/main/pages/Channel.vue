@@ -1,12 +1,29 @@
 <template>
   <div
-    v-if="dataReport"
+    v-if="isReadyData"
     class="page-channel">
-    <Navbar :title="titlePage"/>
+    <Navbar
+      :title="titlePage"
+      @changeTodayDate="changeDateTodayDone"/>
     <b-container>
       <b-row class="no-margin">
+        <b-col
+          cols="6">
+          <TableShow
+            :data-extra="extraReport"
+            :width="widthVisit"
+            title="Show Data Of Total Report"/>
+        </b-col>
+        <hr>
+        <b-col
+          cols="6">
+          <TableShow
+            :data-extra="extraReportVisit"
+            :width="widthVisit"
+            title="Show Data Of Visits Report"/>
+        </b-col>
         <b-col cols="12">
-          <Report/>
+          <FilterDate @change="changeDateDone"/>
         </b-col>
       </b-row>
       <span v-if="noResult !== null ">
@@ -23,15 +40,6 @@
               :chart-types-prop="typesChart"
               :title-chart="titleReport"
               unit="%"/>
-          </b-col>
-          <hr>
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportVisit"
-              :width="widthVisit"
-              title="Show Data Of Visits Report"/>
           </b-col>
           <b-col cols="12">
             <Chart
@@ -51,7 +59,7 @@
 
 <script>
 import Navbar from '../components/Navbar'
-import Report from '../components/Reports'
+import FilterDate from '../components/Filter'
 import Chart from '../components/Chart'
 import DataShow from '../components/Datashow'
 import TableShow from '../components/Table'
@@ -60,7 +68,7 @@ export default {
   name: 'Channel',
   components: {
     Navbar,
-    Report,
+    FilterDate,
     Chart,
     DataShow,
     TableShow
@@ -73,8 +81,8 @@ export default {
   computed: {
     titlePage () {
       this.$store.dispatch({
-        type: 'report/getSection',
-        section: window.location.pathname.slice(1)
+        type: 'filter/setSectionAction',
+        section: 'channels'
       })
       return this.$route.meta.title
     },
@@ -82,67 +90,95 @@ export default {
       return this.$store.getters['report/getResult']
     },
     isFiltering () {
-      return this.$store.getters['report/getFiltering']
+      return this.$store.getters['filter/getFiltering']
+    },
+    isReadyData () {
+      return this.$store.getters['report/getChannelReport'].readyData
     },
     dataReport () {
-      return this.$store.getters['report/getChannelReport'].regOutput
+      return this.$store.getters['report/getChannelReport'].filter.regOutput
     },
     categoryReport () {
-      return this.$store.getters['report/getChannelReport'].regCategory
+      return this.$store.getters['report/getChannelReport'].filter.regCategory
     },
     extraReport () {
-      return this.$store.getters['report/getChannelReport'].data
+      return this.$store.getters['report/getChannelReport'].table.data
     },
     titleReport () {
-      return this.$store.getters['report/getChannelReport'].title
+      return this.$store.getters['report/getChannelReport'].filter.title
     },
     width () {
       let col
-      if (this.$store.getters['report/getChannelReport'].data.length > 4) {
+      if (this.$store.getters['report/getChannelReport'].filter.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getChannelReport'].data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getChannelReport'].filter.data.length * 1) - 2)
       }
       return col
     },
     typesChart () {
-      return this.$store.getters['report/getChannelReport'].types
+      return this.$store.getters['report/getChannelReport'].filter.types
     },
     dataReportVisit () {
-      return this.$store.getters['report/getChannelReport'].visits.output
+      return this.$store.getters['report/getChannelReport'].filter.visits.output
     },
     categoryReportVisit () {
-      return this.$store.getters['report/getChannelReport'].visits.category
+      return this.$store.getters['report/getChannelReport'].filter.visits.category
     },
     extraReportVisit () {
-      return this.$store.getters['report/getChannelReport'].visits.data
+      return this.$store.getters['report/getChannelReport'].table.visits.data
     },
     titleReportVisit () {
-      return this.$store.getters['report/getChannelReport'].visits.title
+      return this.$store.getters['report/getChannelReport'].filter.visits.title
     },
     widthVisit () {
       let col
-      if (this.$store.getters['report/getChannelReport'].visits.data.length > 4) {
+      if (this.$store.getters['report/getChannelReport'].filter.visits.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getChannelReport'].visits.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getChannelReport'].filter.visits.data.length * 1) - 2)
       }
       return col
     },
     typesChartVisit () {
-      return this.$store.getters['report/getChannelReport'].visits.types
+      return this.$store.getters['report/getChannelReport'].filter.visits.types
     }
 
   },
   mounted () {
     this.init()
   },
+  created: function () {
+    this.$store.dispatch({
+      type: 'report/emptyReports',
+      method: 'method'
+    })
+    this.$store.dispatch({
+      type: 'report/emptyTable',
+      method: 'method'
+    })
+  },
   methods: {
+    changeDateDone (event) {
+      this.init()
+    },
+    changeDateTodayDone () {
+      this.init()
+    },
     init () {
+      this.$store.dispatch({
+        type: 'filter/setSectionAction',
+        section: 'channels'
+      })
       this.$store.dispatch({
         type: 'report/getReportAction',
         method: 'method',
-        section: window.location.pathname.slice(1)
+        section: 'channels'
+      })
+      this.$store.dispatch({
+        type: 'report/getReportActionOneDay',
+        method: 'method',
+        section: 'channels'
       })
     }
   }

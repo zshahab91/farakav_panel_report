@@ -1,6 +1,6 @@
 <template>
   <div class="component-table">
-    <h5>{{ title }} :</h5>
+    <!--<h5>{{ title }} :</h5>-->
     <b-table
       :items="dataExtra"
       :fields="fields"
@@ -27,7 +27,7 @@ export default {
     return {
       fields: {
         name: {
-          label: 'Date',
+          label: this.title,
           sortable: true
         },
         data: {

@@ -1,19 +1,42 @@
 <template>
   <div
-    v-if="dataReport"
+    v-if="isReadyData"
     class="page-video">
-    <Navbar :title="titlePage"/>
+    <Navbar
+      :title="titlePage"
+      @changeTodayDate="changeDateTodayDone"/>
     <b-container>
-      <b-row class="no-margin">
-        <b-col cols="12">
-          <Report/>
-        </b-col>
-      </b-row>
       <span v-if="noResult !== null ">
         <h3>{{ noResult }}</h3>
       </span>
       <span v-else>
         <b-row class="no-margin">
+          <b-col
+            cols="4">
+            <TableShow
+              :data-extra="extraReportChannel"
+              :width="widthChannel"
+              title="Per Channel Report"/>
+          </b-col>
+          <hr>
+          <b-col
+            cols="4">
+            <TableShow
+              :data-extra="extraReportVisit"
+              :width="widthVisit"
+              title="Visits Report"/>
+          </b-col>
+          <hr>
+          <b-col
+            cols="4">
+            <TableShow
+              :data-extra="extraReportStatus"
+              :width="widthVisit"
+              title="Status Report"/>
+          </b-col>
+          <b-col cols="12">
+            <FilterDate @change="changeDateDone"/>
+          </b-col>
           <b-col cols="12">
             <Chart
               :is-filter="false"
@@ -23,15 +46,6 @@
               :title-chart="titleReport"
               :width="widthChart"
               unit="%"/>
-          </b-col>
-          <hr>
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportVisit"
-              :width="widthVisit"
-              title="Show Data Of Visits Report"/>
           </b-col>
           <b-col cols="12">
             <Chart
@@ -44,14 +58,6 @@
               unit="%"/>
           </b-col>
           <hr>
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportChannel"
-              :width="widthChannel"
-              title="Show Data Of Per Channel Report"/>
-          </b-col>
           <b-col cols="12">
             <Chart
               :is-filter="false"
@@ -71,7 +77,7 @@
 
 <script>
 import Navbar from '../components/Navbar'
-import Report from '../components/Reports'
+import FilterDate from '../components/Filter'
 import Chart from '../components/Chart'
 import DataShow from '../components/Datashow'
 import TableShow from '../components/Table'
@@ -79,7 +85,7 @@ export default {
   name: 'Video',
   components: {
     Navbar,
-    Report,
+    FilterDate,
     Chart,
     DataShow,
     TableShow
@@ -92,8 +98,8 @@ export default {
   computed: {
     titlePage () {
       this.$store.dispatch({
-        type: 'report/getSection',
-        section: window.location.pathname.slice(1)
+        type: 'filter/setSectionAction',
+        section: 'videos'
       })
       return this.$route.meta.title
     },
@@ -101,90 +107,121 @@ export default {
       return this.$store.getters['report/getResult']
     },
     isFiltering () {
-      return this.$store.getters['report/getFiltering']
+      return this.$store.getters['filter/getFiltering']
+    },
+    isReadyData () {
+      return this.$store.getters['report/getVideoReport'].readyData
     },
     dataReport () {
-      return this.$store.getters['report/getVideoReport'].statusOutput
+      return this.$store.getters['report/getVideoReport'].filter.statusOutput
     },
     categoryReport () {
-      return this.$store.getters['report/getVideoReport'].statusCategory
+      return this.$store.getters['report/getVideoReport'].filter.statusCategory
     },
     extraReport () {
-      return this.$store.getters['report/getVideoReport'].data
+      return this.$store.getters['report/getVideoReport'].table.data
     },
     titleReport () {
-      return this.$store.getters['report/getVideoReport'].title
+      return this.$store.getters['report/getVideoReport'].filter.title
     },
     width () {
       let col
-      if (this.$store.getters['report/getVideoReport'].data.length > 4) {
+      if (this.$store.getters['report/getVideoReport'].filter.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getVideoReport'].data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getVideoReport'].filter.data.length * 1) - 2)
       }
       return col
     },
     typesChart () {
-      return this.$store.getters['report/getVideoReport'].types
+      return this.$store.getters['report/getVideoReport'].filter.types
     },
     dataReportVisit () {
-      return this.$store.getters['report/getVideoReport'].visits.output
+      return this.$store.getters['report/getVideoReport'].filter.visits.output
     },
     categoryReportVisit () {
-      return this.$store.getters['report/getVideoReport'].visits.category
+      return this.$store.getters['report/getVideoReport'].filter.visits.category
     },
     extraReportVisit () {
-      return this.$store.getters['report/getVideoReport'].visits.data
+      return this.$store.getters['report/getVideoReport'].table.visits.data
+    },
+    extraReportStatus () {
+      return this.$store.getters['report/getVideoReport'].table.data
     },
     titleReportVisit () {
-      return this.$store.getters['report/getVideoReport'].visits.title
+      return this.$store.getters['report/getVideoReport'].filter.visits.title
     },
     widthVisit () {
       let col
-      if (this.$store.getters['report/getVideoReport'].visits.data.length > 4) {
+      if (this.$store.getters['report/getVideoReport'].filter.visits.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getVideoReport'].visits.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getVideoReport'].filter.visits.data.length * 1) - 2)
       }
       return col
     },
     typesChartVisit () {
-      return this.$store.getters['report/getVideoReport'].visits.types
+      return this.$store.getters['report/getVideoReport'].filter.visits.types
     },
     dataReportChannel () {
-      return this.$store.getters['report/getVideoReport'].channel.output
+      return this.$store.getters['report/getVideoReport'].filter.channel.output
     },
     categoryReportChannel () {
-      return this.$store.getters['report/getVideoReport'].channel.category
+      return this.$store.getters['report/getVideoReport'].filter.channel.category
     },
     extraReportChannel () {
-      return this.$store.getters['report/getVideoReport'].channel.data
+      return this.$store.getters['report/getVideoReport'].table.channel.data
     },
     titleReportChannel () {
-      return this.$store.getters['report/getVideoReport'].channel.title
+      return this.$store.getters['report/getVideoReport'].filter.channel.title
     },
     widthChannel () {
       let col
-      if (this.$store.getters['report/getVideoReport'].channel.data.length > 4) {
+      if (this.$store.getters['report/getVideoReport'].filter.channel.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getVideoReport'].channel.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getVideoReport'].filter.channel.data.length * 1) - 2)
       }
       return col
     },
     typesChartChannel () {
-      return this.$store.getters['report/getVideoReport'].channel.types
+      return this.$store.getters['report/getVideoReport'].filter.channel.types
     }
   },
   mounted () {
     this.init()
   },
+  created: function () {
+    this.$store.dispatch({
+      type: 'report/emptyReports',
+      method: 'method'
+    })
+    this.$store.dispatch({
+      type: 'report/emptyTable',
+      method: 'method'
+    })
+  },
   methods: {
+    changeDateDone (event) {
+      this.init()
+    },
+    changeDateTodayDone () {
+      this.init()
+    },
     init () {
+      this.$store.dispatch({
+        type: 'filter/setSectionAction',
+        section: 'videos'
+      })
       this.$store.dispatch({
         type: 'report/getReportAction',
         method: 'method',
-        section: window.location.pathname.slice(1)
+        section: 'videos'
+      })
+      this.$store.dispatch({
+        type: 'report/getReportActionOneDay',
+        method: 'method',
+        section: 'videos'
       })
     }
   }

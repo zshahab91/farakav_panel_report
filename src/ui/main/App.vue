@@ -4,12 +4,12 @@
     class="page-app">
     <notifications/>
     <div class="container-fluid p-0">
-      <div class="row">
+      <div class="row m-0">
         <!-- Sidebar -->
-        <div class="col-lg-2 col-sm-12 p-0">
+        <div class="col-lg-3 col-xl-2 col-sm-12 p-0">
           <Sidebar/>
         </div>
-        <div class="col-lg-10 col-sm-12 p-0">
+        <div class="col-lg-9 col-xl-10 col-sm-12 p-0">
           <!-- Content -->
           <main class="page">
             <div

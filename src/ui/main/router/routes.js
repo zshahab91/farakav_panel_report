@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 // Imports Components
 import HomePage from '../pages/Home'
 import HomePageLayout from '../pages/Homepagelayout'
@@ -12,7 +13,7 @@ import Task from '../pages/Task'
 import Video from '../pages/Video'
 import NotFound from '../pages/404'
 import Error from '../pages/Error'
-
+const _ = require('lodash')
 Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
@@ -97,6 +98,27 @@ const router = new VueRouter({
       }
     }
   ]
+})
+router.beforeEach((to, from, next) => {
+  // console.log('localStorage is:', localStorage)
+  let query = ''
+  _.forOwn(localStorage, (value, key) => {
+    if (key !== 'loglevel:webpack-dev-server' && key !== 'length') {
+      let param = key + '=' + value + '&'
+      query += param
+    }
+  })
+  // console.log('query is:', query)
+  if (query === '') {
+    return
+  } else {
+    if (query.slice(-1) === '&') {
+      query = query.slice(0, -1)
+    }
+    // next({path: to.path, query: {from: query.from}})
+  }
+
+  next()
 })
 
 export default router

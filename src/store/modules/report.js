@@ -1,109 +1,30 @@
 import { HTTP } from '../../services/http-common'
 import { checkRes } from '../../services/validate'
 import { filteringWord } from '../../services/characterFilter'
+// import moduleHomePage from './homePage'
 const _ = require('lodash')
 
 const moduleReport = {
   namespaced: true,
   state: {
     reports: [],
-    from: null,
-    to: null,
-    section: null,
-    date: null,
-    isDate: false,
-    isFilter: false,
+    dataTable: [],
     noData: false,
     loading: false,
     noResult: null
   },
   mutations: {
-    setDate (state, payload) {
-      if (payload.startDate.length === 0 && payload.endDate.length !== 0) {
-        state.date = payload.endDate
-        state.isDate = true
-      } else if (payload.startDate.length !== 0 && payload.endDate.length === 0) {
-        state.date = payload.startDate
-        state.isDate = true
-      } else {
-        state.from = payload.startDate
-        state.to = payload.endDate
-        state.date = null
-        state.isDate = false
-        state.reports = []
-      }
-    },
     getEmptyReports: (state) => {
       state.reports = []
       return state.reports
     },
-    setSection (state, payload) {
-      state.section = payload.section
-    },
-    getReport (state, payload) {
-      state.loading = true
-      state.reports = []
-      state.isFilter = false
-      state.noResult = null
-      let params = ''
-      const section = payload.section !== null || payload.section !== undefined ? payload.section : null
-      _.forOwn(state, (value, key) => {
-        if (key !== 'reports' && key !== 'section' && key !== 'isFilter' && key !== 'noData' && key !== 'isDate' && key !== 'loading' && key !== 'noResult' && value !== null) {
-          let param = key + '=' + value + '&'
-          params += param
-        }
-      })
-      if (params !== '') {
-        params = '&' + params.slice(0, -1)
-      }
-      const url = '/reports' + (section !== null ? '?section=' + section + params : '')
-      HTTP.get(url)
-        .then((res) => {
-          if (checkRes(res)) {
-            state.from = null
-            state.to = null
-            state.date = null
-            if (res.data.data.length !== 0 || res.data.data.report) {
-              if (params.length !== 0 && !state.isDate) {
-                state.reports = res.data.data
-                state.isFilter = true
-              } else {
-                state.reports = res.data.data.report
-                state.isFilter = false
-                state.isDate = false
-              }
-            } else {
-              location.reload()
-            }
-            state.loading = false
-          }
-        })
-        .catch((err) => {
-          state.loading = false
-          console.log('err is:', err)
-          err = err.toString()
-          if (err.includes('404')) {
-            state.noResult = 'No Data For Show...!'
-          } else {
-            window.location.href = '/' + state.section
-          }
-          // this.$router.replace('/')
-          // window.location.href = '/' + state.section
-          return err
-        })
+    getEmptyTable: (state) => {
+      state.dataTable = []
+      return state.dataTable
     }
   },
 
   getters: {
-    getFiltering: (state) => {
-      let flag = false
-      if (!state.isDate && state.isFilter) {
-        flag = true
-      } else if (state.isDate && state.isFilter) {
-        flag = false
-      }
-      return flag
-    },
     getData: (state) => {
       return state.reports
     },
@@ -151,9 +72,12 @@ const moduleReport = {
         return objOutput
       }
     },
-    getHomeReport: (state) => {
-      let dataExtra = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getHomeReport: (state, getters, rootState) => {
+      let readyData = false
+      let objTable = {}
+      let objFilter = {}
+      if (state.reports.length !== 0) {
+        let dataExtra = []
         let dates = []
         const output = []
         let min = []
@@ -199,7 +123,7 @@ const moduleReport = {
           name: 'Avg',
           data: avg
         })
-        const objOutput = {
+        const objOut = {
           output: output,
           category: dates,
           data: dataExtra,
@@ -207,9 +131,11 @@ const moduleReport = {
           unit: '%',
           types: ['Column']
         }
-        return objOutput
-      } else {
-        const obj = state.reports
+        objFilter = objOut
+      }
+      if (state.dataTable.length !== 0) {
+        let dataExtra = []
+        const obj = state.dataTable
         const output = []
         if (obj !== undefined) {
           const changesPercent = obj.changes_percent
@@ -225,7 +151,7 @@ const moduleReport = {
           })
           dataExtra = output
         }
-        const objOutput = {
+        const objOut = {
           output: output,
           category: ['changesPercent'],
           data: dataExtra,
@@ -233,16 +159,23 @@ const moduleReport = {
           unit: '%',
           types: ['Column']
         }
-        return objOutput
+        objTable = objOut
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     },
-    getLikeReport: (state) => {
-      const outputPerVideo = []
-      const outputPerAuthor = []
-      let dataExtraPerVideo = []
-      let dataExtraPerAuthor = []
-      let dataExtra = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getLikeReport: (state, getters, rootState) => {
+      let readyData = false
+      let objFilter = {}
+      let objTable = {}
+      if (rootState.filter.isFilter && state.reports.length !== 0) {
         let dates = []
         const dataMinVideo = []
         const dataMaxVideo = []
@@ -250,6 +183,9 @@ const moduleReport = {
         const dataMinAuthor = []
         const dataMaxAuthor = []
         const dataAvgAuthor = []
+        const outputPerVideo = []
+        const outputPerAuthor = []
+        let dataExtra = []
         const count = []
         _.forOwn(state.reports, (value, key) => {
           dates.push(value.report_date)
@@ -334,9 +270,14 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
-      } else {
-        const obj = state.reports
+        objFilter = objOutput
+      }
+      if (state.dataTable.length !== 0) {
+        let dataExtraPerVideo = []
+        let dataExtraPerAuthor = []
+        const outputPerVideo = []
+        const outputPerAuthor = []
+        const obj = state.dataTable
         if (obj !== undefined) {
           const dataMinVideo = []
           const dataMaxVideo = []
@@ -344,6 +285,7 @@ const moduleReport = {
           const dataMinAuthor = []
           const dataMaxAuthor = []
           const dataAvgAuthor = []
+          let dataExtra = []
           dataExtra.push({
             name: 'Count',
             data: obj.count
@@ -415,18 +357,27 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
+        objTable = objOutput
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     },
-    getCommentReport: (state) => {
-      const outputPerVideo = []
-      const outputPerAuthor = []
-      const outputPerChannel = []
-      let dataExtraPerVideo = []
-      let dataExtraPerAuthor = []
-      let dataExtraPerChannel = []
-      let dataExtra = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getCommentReport: (state, getters, rootState) => {
+      let readyData = false
+      let objFilter = {}
+      let objTable = {}
+      if (rootState.filter.isFilter && state.reports.length !== 0) {
+        const outputPerVideo = []
+        const outputPerAuthor = []
+        const outputPerChannel = []
+        let dataExtra = []
         let dates = []
         let minChannel = []
         let avgChannel = []
@@ -556,9 +507,17 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
-      } else {
-        const obj = state.reports
+        objFilter = objOutput
+      }
+      if (state.dataTable.length !== 0) {
+        const obj = state.dataTable
+        let dataExtraPerVideo = []
+        let dataExtraPerAuthor = []
+        let dataExtraPerChannel = []
+        const outputPerVideo = []
+        const outputPerAuthor = []
+        const outputPerChannel = []
+        let dataExtra = []
         if (obj !== undefined) {
           const dataMinVideo = []
           const dataMaxVideo = []
@@ -672,18 +631,27 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
+        objTable = objOutput
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     },
-    getPlaylistsReport: (state) => {
-      const outputTotal = []
-      const outputNotEmpty = []
-      let dataExtraTotal = []
-      let dataExtraNotEmpty = []
-      let totalOutput = []
-      let notEmptyOutput = []
-      let dataExtra = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getPlaylistsReport: (state, getters, rootState) => {
+      let readyData = false
+      let objFilter = {}
+      let objTable = {}
+      if (rootState.filter.isFilter && state.reports.length !== 0) {
+        let dataExtraNotEmpty = []
+        let totalOutput = []
+        let notEmptyOutput = []
+        let dataExtra = []
         let dates = []
         const dataMinTotal = []
         const dataMaxTotal = []
@@ -781,9 +749,14 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
-      } else {
-        const obj = state.reports
+        objFilter = objOutput
+      }
+      if (state.dataTable.length !== 0) {
+        const outputTotal = []
+        const outputNotEmpty = []
+        let dataExtraTotal = []
+        let dataExtraNotEmpty = []
+        const obj = state.dataTable
         if (obj !== undefined) {
           if (obj.total) {
             _.forOwn(obj.total.videos, (value, key) => {
@@ -828,15 +801,24 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
+        objTable = objOutput
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     },
-    getChannelReport: (state) => {
-      const output = []
-      const regOutput = []
-      let dataExtraVisit = []
-      let dataExtra = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getChannelReport: (state, getters, rootState) => {
+      let readyData = false
+      let objFilter = {}
+      let objTable = {}
+      if (rootState.filter.isFilter && state.reports.length !== 0) {
+        let dataExtra = []
         let dates = []
         const output = []
         let min = []
@@ -912,9 +894,14 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
-      } else {
-        const obj = state.reports
+        objFilter = objOutput
+      }
+      if (state.dataTable.length !== 0) {
+        const output = []
+        const regOutput = []
+        let dataExtraVisit = []
+        let dataExtra = []
+        const obj = state.dataTable
         if (obj !== undefined) {
           const dataMin = []
           const dataMax = []
@@ -981,17 +968,26 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
+        objTable = objOutput
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     },
-    getVideoReport: (state) => {
-      const statusOutput = []
-      const visitsOutput = []
-      const channelOutput = []
-      let dataExtraVisit = []
-      let dataExtraChannel = []
-      let dataExtra = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getVideoReport: (state, getters, rootState) => {
+      let readyData = false
+      let objFilter = {}
+      let objTable = {}
+      if (rootState.filter.isFilter && state.reports.length !== 0) {
+        const visitsOutput = []
+        const channelOutput = []
+        let dataExtra = []
         let dates = []
         const dataMinVisit = []
         const dataMaxVisit = []
@@ -1102,9 +1098,16 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
-      } else {
-        const obj = state.reports
+        objFilter = objOutput
+      }
+      if (state.dataTable.length !== 0) {
+        const obj = state.dataTable
+        const statusOutput = []
+        const visitsOutput = []
+        const channelOutput = []
+        let dataExtraVisit = []
+        let dataExtraChannel = []
+        let dataExtra = []
         if (obj !== undefined) {
           const dataMinVisit = []
           const dataMaxVisit = []
@@ -1134,6 +1137,13 @@ const moduleReport = {
               dataAvgChannel.push(value)
             }
           })
+          // const perStatus = obj.per_status
+          // _.forOwn(perStatus, (value, key) => {
+          //   dataExtraStatus.push({
+          //     name: filteringWord(key),
+          //     data: [value]
+          //   })
+          // })
           visitsOutput.push({
             name: 'Min',
             data: dataMinVisit
@@ -1198,16 +1208,28 @@ const moduleReport = {
             types: ['Column']
           }
         }
-        return objOutput
+        objTable = objOutput
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     },
-    getCategoryReport: (state) => {
-      const outputTotal = []
-      const chartsSlugs = []
-      const charts = []
-      let dataExtra = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getCategoryReport: (state, getters, rootState) => {
+      let readyData = false
+      let objFilter = {}
+      let objTable = {}
+      if (rootState.filter.isFilter && state.reports.length !== 0) {
+        const outputTotal = []
+        const chartsSlugs = []
+        const charts = []
         let dates = []
+        let dataExtra = []
         const dataMinTotal = []
         const dataMaxTotal = []
         const dataAvgTotal = []
@@ -1330,9 +1352,13 @@ const moduleReport = {
           },
           charts
         }
-        return objOutput
-      } else {
-        const obj = state.reports
+        objFilter = objOutput
+      }
+      if (state.dataTable.length !== 0) {
+        const outputTotal = []
+        const charts = []
+        let dataExtra = []
+        const obj = state.dataTable
         if (obj.total !== undefined) {
           const total = obj.total
           const dataMinTotal = []
@@ -1415,7 +1441,7 @@ const moduleReport = {
             })
           })
         }
-        const objOutput = {
+        const objOutputTable = {
           total: {
             output: outputTotal,
             category: ['Changes Percent'],
@@ -1426,21 +1452,29 @@ const moduleReport = {
           },
           charts
         }
-        return objOutput
+        objTable = objOutputTable
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     },
-    getTaskReport: (state) => {
-      const outputTotal = []
-      const dataExtra = []
-      const dataExtraTypes = []
-      const categoryTotal = []
-      const objOutputFilter = []
-      // const chartsTypes = []
-      const totalTypes = []
-      const charts = []
-      const chartsTotal = []
-      const perTypesObj = []
-      if (state.isFilter && state.reports.length !== undefined) {
+    getTaskReport: (state, getters, rootState) => {
+      let readyData = false
+      let objFilter = {}
+      let objTable = {}
+      if (rootState.filter.isFilter && state.reports !== undefined && state.reports.length !== 0) {
+        const dataExtra = []
+        const dataExtraTypes = []
+        const objOutputFilter = []
+        const totalTypes = []
+        const chartsTotal = []
+        const perTypesObj = []
         let dates = []
         _.forOwn(state.reports[0].report.total.per_state, (val, inx) => {
           totalTypes.push({
@@ -1468,7 +1502,9 @@ const moduleReport = {
             min.push(totalState['execution_time'].min)
             max.push(totalState['execution_time'].max)
             avg.push(totalState['execution_time'].avg)
-            let item = totalTypes.find(function (obj) { return obj.name === i })
+            let item = totalTypes.find(function (obj) {
+              return obj.name === i
+            })
             item.min = item.min.concat(min)
             item.max = item.max.concat(max)
             item.avg = item.avg.concat(avg)
@@ -1477,7 +1513,9 @@ const moduleReport = {
           // Start Per Type
           let perTypes = itemTask.per_type
           _.forOwn(perTypes, (type, inx) => {
-            if (!perTypesObj.find(function (obj) { return obj.name === inx })) {
+            if (!perTypesObj.find(function (obj) {
+              return obj.name === inx
+            })) {
               let chart = []
               dataExtraTypes.push({
                 name: 'Count',
@@ -1506,10 +1544,16 @@ const moduleReport = {
                 chart: chart
               })
             } else {
-              let item = perTypesObj.find(function (obj) { return obj.name === inx })
+              let item = perTypesObj.find(function (obj) {
+                return obj.name === inx
+              })
               _.forOwn(type.per_state, (val, j) => {
-                if (item.chart.find(function (obj) { return obj.name === j })) {
-                  let itemChart = item.chart.find(function (obj) { return obj.name === j })
+                if (item.chart.find(function (obj) {
+                  return obj.name === j
+                })) {
+                  let itemChart = item.chart.find(function (obj) {
+                    return obj.name === j
+                  })
                   itemChart.min.push(val['execution_time'].min)
                   itemChart.max.push(val['execution_time'].max)
                   itemChart.avg.push(val['execution_time'].avg)
@@ -1591,10 +1635,15 @@ const moduleReport = {
         const objOutput = {
           objOutputFilter
         }
-        return objOutput
-      } else {
-        const obj = state.reports
-        if (obj.total !== undefined) {
+        objFilter = objOutput
+      }
+      if (state.dataTable.length !== 0) {
+        const outputTotal = []
+        const dataExtra = []
+        const categoryTotal = []
+        const charts = []
+        const obj = state.dataTable
+        if (obj !== undefined) {
           const total = obj.total
           const perType = obj.per_type
           const totalPerState = obj.total.per_state
@@ -1633,10 +1682,6 @@ const moduleReport = {
             name: 'Avg',
             data: dataAvg
           })
-          // outputTotal.push({
-          //   name: 'Count',
-          //   data: count
-          // })
           dataExtra.push({
             name: 'Min',
             data: Math.min(...dataMin)
@@ -1653,7 +1698,6 @@ const moduleReport = {
             name: 'Count',
             data: total.count
           })
-          // let arrayCategory = []
           // Per Type
           _.forOwn(perType, (value, key) => {
             let perState = value.per_state
@@ -1718,33 +1762,90 @@ const moduleReport = {
           },
           charts
         }
-        return objOutput
+        objTable = objOutput
       }
+      if (Object.getOwnPropertyNames(objFilter).length > 0 && Object.getOwnPropertyNames(objTable).length > 0) {
+        readyData = true
+      }
+      const out = {
+        filter: objFilter,
+        table: objTable,
+        readyData: readyData
+      }
+      return out
     }
   },
   actions: {
-    getDate ({commit}, payload) {
-      commit({
-        type: 'setDate',
-        startDate: payload.startDate,
-        endDate: payload.endDate
-      })
-    },
-    getSection ({commit}, payload) {
-      commit({
-        type: 'setSection',
-        section: payload.section
-      })
-    },
     emptyReports ({commit}) {
       commit('getEmptyReports')
     },
-    getReportAction ({commit}, payload) {
-      commit({
-        type: 'getReport',
-        method: payload.method,
-        section: payload.section
-      })
+    emptyTable ({commit}) {
+      commit('getEmptyTable')
+    },
+    getReportActionOneDay ({commit, state, rootState}) {
+      state.loading = true
+      state.reports = []
+      rootState.filter.isFilter = false
+      state.noResult = null
+      let url = rootState.filter.section !== null ? '/reports?section=' + rootState.filter.section + '&date=' + rootState.filter.date : '/reports'
+      HTTP.get(url)
+        .then((res) => {
+          if (checkRes(res)) {
+            state.dataTable = res.data.data.report
+            state.loading = false
+          }
+        })
+        .catch((err) => {
+          state.loading = false
+          console.log('err is:', err)
+          err = err.toString()
+          if (err.includes('404')) {
+            state.noResult = 'No Data For Show...!'
+          } else {
+            // window.location.href = '/' + state.section
+          }
+          // this.$router.replace('/')
+          // window.location.href = '/' + state.section
+          return err
+        })
+    },
+    getReportAction ({commit, state, rootState}, payload) {
+      state.loading = true
+      state.reports = []
+      rootState.filter.isFilter = false
+      state.noResult = null
+      let url = rootState.filter.section !== null ? rootState.filter.url : '/reports'
+      HTTP.get(url)
+        .then((res) => {
+          if (checkRes(res)) {
+            if (res.data.data.length !== 0 || res.data.data.report) {
+              if (rootState.filter.section !== null) {
+                state.reports = res.data.data
+                rootState.filter.isFilter = true
+              } else {
+                state.reports = res.data.data.report
+                rootState.filter.isFilter = false
+                rootState.filter.isDate = false
+              }
+            } else {
+              // location.reload()
+            }
+            state.loading = false
+          }
+        })
+        .catch((err) => {
+          state.loading = false
+          console.log('err is:', err)
+          err = err.toString()
+          if (err.includes('404')) {
+            // state.noResult = 'No Data For Show...!'
+          } else {
+            // window.location.href = '/' + state.section
+          }
+          // this.$router.replace('/')
+          // window.location.href = '/' + state.section
+          return err
+        })
     }
   }
 }

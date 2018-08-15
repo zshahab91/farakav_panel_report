@@ -1,12 +1,29 @@
 <template>
   <div
-    v-if="dataReport"
+    v-if="isReadyData"
     class="page-playlist">
-    <Navbar :title="titlePage"/>
+    <Navbar
+      :title="titlePage"
+      @changeTodayDate="changeDateTodayDone"/>
     <b-container>
       <b-row class="no-margin">
+        <b-col
+          cols="6">
+          <TableShow
+            :data-extra="extraReport"
+            :width="width"
+            title="Total Playlist Report"/>
+        </b-col>
+        <hr>
+        <b-col
+          cols="6">
+          <TableShow
+            :data-extra="extraReportNotEmpty"
+            :width="widthNotEmpty"
+            title="Not Empty Playlist Report"/>
+        </b-col>
         <b-col cols="12">
-          <Report/>
+          <FilterDate @change="changeDateDone"/>
         </b-col>
       </b-row>
       <span v-if="noResult !== null ">
@@ -14,14 +31,6 @@
       </span>
       <span v-else>
         <b-row class="no-margin">
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReport"
-              :width="width"
-              title="Show Data Of Total Playlist Report"/>
-          </b-col>
           <b-col cols="12">
             <Chart
               :is-filter="false"
@@ -31,15 +40,6 @@
               :chart-types-prop="typesChart"
               :title-chart="titleReport"
               unit="%"/>
-          </b-col>
-          <hr>
-          <b-col
-            v-if="!isFiltering"
-            cols="12">
-            <DataShow
-              :data-extra="extraReportNotEmpty"
-              :width="widthNotEmpty"
-              title="Show Data Of Not Empty Playlist Report"/>
           </b-col>
           <b-col cols="12">
             <Chart
@@ -59,7 +59,7 @@
 
 <script>
 import Navbar from '../components/Navbar'
-import Report from '../components/Reports'
+import FilterDate from '../components/Filter'
 import Chart from '../components/Chart'
 import DataShow from '../components/Datashow'
 import TableShow from '../components/Table'
@@ -68,7 +68,7 @@ export default {
   name: 'Playlist',
   components: {
     Navbar,
-    Report,
+    FilterDate,
     Chart,
     DataShow,
     TableShow
@@ -81,68 +81,74 @@ export default {
   computed: {
     titlePage () {
       this.$store.dispatch({
-        type: 'report/getSection',
-        section: window.location.pathname.slice(1)
+        type: 'filter/setSectionAction',
+        section: 'playlists'
       })
       return this.$route.meta.title
     },
     noResult () {
       return this.$store.getters['report/getResult']
     },
+    isReadyData () {
+      return this.$store.getters['report/getPlaylistsReport'].readyData
+    },
+    dataReportRead () {
+      return this.$store.getters['report/getPlaylistsReport'].filter
+    },
     dataReport () {
-      return this.$store.getters['report/getPlaylistsReport'].total.output
+      return this.$store.getters['report/getPlaylistsReport'].filter.total.output
     },
     isFiltering () {
-      return this.$store.getters['report/getFiltering']
+      return this.$store.getters['filter/getFiltering']
     },
     categoryReport () {
-      return this.$store.getters['report/getPlaylistsReport'].total.category
+      return this.$store.getters['report/getPlaylistsReport'].filter.total.category
     },
     extraReport () {
-      return this.$store.getters['report/getPlaylistsReport'].total.data
+      return this.$store.getters['report/getPlaylistsReport'].table.total.data
     },
     titleReport () {
-      return this.$store.getters['report/getPlaylistsReport'].total.title
+      return this.$store.getters['report/getPlaylistsReport'].filter.total.title
     },
     width () {
       let col
-      if (this.$store.getters['report/getPlaylistsReport'].total.data.length > 4) {
+      if (this.$store.getters['report/getPlaylistsReport'].filter.total.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getPlaylistsReport'].total.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getPlaylistsReport'].filter.total.data.length * 1) - 2)
       }
       return col
     },
     typesChart () {
-      return this.$store.getters['report/getPlaylistsReport'].total.types
+      return this.$store.getters['report/getPlaylistsReport'].filter.total.types
     },
     dataReportNotEmpty () {
-      return this.$store.getters['report/getPlaylistsReport'].notEmpty.output
+      return this.$store.getters['report/getPlaylistsReport'].filter.notEmpty.output
     },
     categoryReportNotEmpty () {
-      return this.$store.getters['report/getPlaylistsReport'].notEmpty.category
+      return this.$store.getters['report/getPlaylistsReport'].filter.notEmpty.category
     },
     extraReportNotEmpty () {
-      return this.$store.getters['report/getPlaylistsReport'].notEmpty.data
+      return this.$store.getters['report/getPlaylistsReport'].table.notEmpty.data
     },
     titleReportNotEmpty () {
-      return this.$store.getters['report/getPlaylistsReport'].notEmpty.title
+      return this.$store.getters['report/getPlaylistsReport'].filter.notEmpty.title
     },
     widthNotEmpty () {
       let col
-      if (this.$store.getters['report/getPlaylistsReport'].notEmpty.data.length > 4) {
+      if (this.$store.getters['report/getPlaylistsReport'].filter.notEmpty.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getPlaylistsReport'].notEmpty.data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getPlaylistsReport'].filter.notEmpty.data.length * 1) - 2)
       }
       return col
     },
     typesChartNotEmpty () {
-      return this.$store.getters['report/getPlaylistsReport'].notEmpty.types
+      return this.$store.getters['report/getPlaylistsReport'].filter.notEmpty.types
     }
   },
   mounted () {
-    // this.init()
+    this.init()
   },
   created: function () {
     this.$store.dispatch({
@@ -150,24 +156,32 @@ export default {
       method: 'method'
     })
     this.$store.dispatch({
-      type: 'report/getReportAction',
-      method: 'method',
-      section: window.location.pathname.slice(1)
+      type: 'report/emptyTable',
+      method: 'method'
     })
   },
   methods: {
+    changeDateDone (event) {
+      this.init()
+    },
+    changeDateTodayDone () {
+      this.init()
+    },
     init () {
       this.$store.dispatch({
-        type: 'report/emptyReports',
-        method: 'method'
+        type: 'filter/setSectionAction',
+        section: 'playlists'
       })
-      setTimeout(() => {
-        this.$store.dispatch({
-          type: 'report/getReportAction',
-          method: 'method',
-          section: window.location.pathname.slice(1)
-        })
-      }, 200)
+      this.$store.dispatch({
+        type: 'report/getReportAction',
+        method: 'method',
+        section: 'playlists'
+      })
+      this.$store.dispatch({
+        type: 'report/getReportActionOneDay',
+        method: 'method',
+        section: 'playlists'
+      })
     }
   }
 }

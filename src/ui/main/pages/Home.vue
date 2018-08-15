@@ -49,6 +49,10 @@ export default {
   },
   computed: {
     titlePage () {
+      this.$store.dispatch({
+        type: 'filter/setSectionAction',
+        section: null
+      })
       return this.$route.meta.title
     },
     noResult () {
@@ -72,17 +76,16 @@ export default {
       type: 'report/emptyReports',
       method: 'method'
     })
-    this.$store.dispatch({
-      type: 'report/getReportAction',
-      method: 'method',
-      section: null
-    })
   },
   mounted () {
-    // this.init()
+    this.init()
   },
   methods: {
     init () {
+      this.$store.dispatch({
+        type: 'filter/setSectionAction',
+        section: null
+      })
       this.$store.dispatch({
         type: 'report/getReportAction',
         method: 'method',

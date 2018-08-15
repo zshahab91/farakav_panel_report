@@ -1,24 +1,25 @@
 <template>
   <div
-    v-if="dataReport"
+    v-if="isReadyData"
     class="page-home-layout">
-    <Navbar :title="titlePage"/>
+    <Navbar
+      :title="titlePage"
+      @changeTodayDate="changeDateTodayDone"/>
     <b-container>
       <span v-if="noResult !== null ">
         <h3>{{ noResult }}</h3>
       </span>
       <span v-else>
         <b-row class="no-margin">
-          <b-col cols="12">
-            <Report/>
-          </b-col>
           <b-col
-            v-if="!isFiltering"
             cols="12">
-            <DataShow
+            <TableShow
               :data-extra="extraReport"
               :width="width"
               title="Show Data Of HomePage Layout Report"/>
+          </b-col>
+          <b-col cols="12">
+            <FilterDate @change="changeDateDone"/>
           </b-col>
           <b-col cols="12">
             <Chart
@@ -38,7 +39,7 @@
 
 <script>
 import Navbar from '../components/Navbar'
-import Report from '../components/Reports'
+import FilterDate from '../components/Filter'
 import Chart from '../components/Chart'
 import DataShow from '../components/Datashow'
 import TableShow from '../components/Table'
@@ -46,7 +47,7 @@ export default {
   name: 'Homepagelayout',
   components: {
     Navbar,
-    Report,
+    FilterDate,
     Chart,
     DataShow,
     TableShow
@@ -59,51 +60,79 @@ export default {
   computed: {
     titlePage () {
       this.$store.dispatch({
-        type: 'report/getSection',
-        section: window.location.pathname.slice(1)
+        type: 'filter/setSectionAction',
+        section: 'homepage_layouts'
       })
       return this.$route.meta.title
     },
     isFiltering () {
-      return this.$store.getters['report/getFiltering']
+      return this.$store.getters['filter/getFiltering']
+    },
+    isReadyData () {
+      return this.$store.getters['report/getHomeReport'].readyData
     },
     noResult () {
       return this.$store.getters['report/getResult']
     },
     dataReport () {
-      return this.$store.getters['report/getHomeReport'].output
+      return this.$store.getters['report/getHomeReport'].filter.output
     },
     categoryReport () {
-      return this.$store.getters['report/getHomeReport'].category
+      return this.$store.getters['report/getHomeReport'].filter.category
     },
     extraReport () {
-      return this.$store.getters['report/getHomeReport'].data
+      return this.$store.getters['report/getHomeReport'].table.data
     },
     titleReport () {
-      return this.$store.getters['report/getHomeReport'].title
+      return this.$store.getters['report/getHomeReport'].filter.title
     },
     width () {
       let col
-      if (this.$store.getters['report/getHomeReport'].data.length > 4) {
+      if (this.$store.getters['report/getHomeReport'].filter.data.length > 4) {
         col = ((100 / 4) - 2)
       } else {
-        col = ((100 / this.$store.getters['report/getHomeReport'].data.length * 1) - 2)
+        col = ((100 / this.$store.getters['report/getHomeReport'].filter.data.length * 1) - 2)
       }
       return col
     },
     typesChart () {
-      return this.$store.getters['report/getHomeReport'].types
+      return this.$store.getters['report/getHomeReport'].filter.types
     }
   },
   mounted () {
     this.init()
   },
+  created: function () {
+    this.$store.dispatch({
+      type: 'report/emptyReports',
+      method: 'method'
+    })
+    this.$store.dispatch({
+      type: 'report/emptyTable',
+      method: 'method'
+    })
+  },
   methods: {
+    changeDateDone (event) {
+      this.init()
+    },
+    changeDateTodayDone () {
+      this.init()
+    },
     init () {
+      this.$store.dispatch({
+        type: 'filter/setSectionAction',
+        section: 'homepage_layouts'
+      })
       this.$store.dispatch({
         type: 'report/getReportAction',
         method: 'method',
-        section: window.location.pathname.slice(1)
+        section: 'homepage_layouts'
+      })
+      this.$store.dispatch({
+        type: 'report/getReportActionOneDay',
+        method: 'method',
+        section: 'homepage_layouts'
       })
     }
   }
